@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CivicPulse — Local Community Event Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== CSS VARIABLES & RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #0a1628;
+      --blue:    #1a56db;
+      --blue-lt: #2d6ef7;
+      --sky:     #e8f0fe;
+      --accent:  #f59e0b;
+      --green:   #10b981;
+      --red:     #ef4444;
+      --white:   #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100:#f1f5f9;
+      --gray-200:#e2e8f0;
+      --gray-400:#94a3b8;
+      --gray-600:#475569;
+      --gray-800:#1e293b;
+      --radius:  12px;
+      --shadow:  0 4px 24px rgba(10,22,40,.10);
+      --shadow-lg:0 12px 40px rgba(10,22,40,.16);
+      --transition: .25s cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      line-height: 1.6;
+    }
+
+    h1,h2,h3,h4 { font-family: 'Sora', sans-serif; }
+
+    a { color: var(--blue); text-decoration: none; transition: color var(--transition); }
+    a:hover { color: var(--blue-lt); }
+
+    img { max-width: 100%; display: block; }
+
+    /* ===== UTILITY ===== */
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .section-label {
+      display: inline-block;
+      font-family: 'Sora', sans-serif;
+      font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--blue);
+      background: var(--sky); border-radius: 20px;
+      padding: 4px 14px; margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 2rem; font-weight: 800;
+      color: var(--navy); margin-bottom: 8px;
+    }
+    .section-sub { color: var(--gray-600); max-width: 560px; margin-bottom: 40px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px; border-radius: 8px;
+      font-family: 'Sora', sans-serif; font-size: .9rem; font-weight: 600;
+      cursor: pointer; border: none; transition: all var(--transition);
+    }
+    .btn-primary { background: var(--blue); color: #fff; }
+    .btn-primary:hover { background: var(--blue-lt); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,86,219,.35); color: #fff; }
+    .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+    .btn-outline:hover { background: var(--blue); color: #fff; transform: translateY(-2px); }
+    .btn-accent { background: var(--accent); color: var(--navy); }
+    .btn-accent:hover { background: #f6ad1a; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,.35); }
+    .btn-danger { background: var(--red); color: #fff; }
+    .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #059669; transform: translateY(-2px); }
+    .btn-sm { padding: 8px 18px; font-size: .82rem; }
+
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 32px;
+      transition: box-shadow var(--transition), transform var(--transition);
+    }
+    .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+
+    .badge {
+      display: inline-block; font-size: .72rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; letter-spacing: .04em;
+    }
+    .badge-blue { background: var(--sky); color: var(--blue); }
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+
+    /* ===== EXERCISE HEADER STRIP ===== */
+    .ex-strip {
+      background: linear-gradient(90deg, var(--navy) 0%, #162540 100%);
+      color: #94a3b8; font-family: 'Sora', sans-serif;
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 8px 24px;
+      display: flex; align-items: center; gap: 10px;
+      border-radius: 0;
+    }
+    .ex-strip .ex-num {
+      background: var(--blue); color: #fff;
+      border-radius: 4px; padding: 2px 8px; font-size: .68rem;
+    }
+
+    /* ===== NOTIFICATION TOAST ===== */
+    #toast {
+      position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+      min-width: 280px; max-width: 380px;
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow-lg); padding: 18px 22px;
+      display: flex; align-items: flex-start; gap: 14px;
+      transform: translateY(120px); opacity: 0;
+      transition: all .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast .toast-icon { font-size: 1.3rem; margin-top: 2px; }
+    #toast .toast-icon.success { color: var(--green); }
+    #toast .toast-icon.error { color: var(--red); }
+    #toast .toast-icon.info { color: var(--blue); }
+    #toast .toast-body .toast-title { font-family: 'Sora', sans-serif; font-weight: 700; font-size: .9rem; color: var(--navy); }
+    #toast .toast-body .toast-msg { font-size: .83rem; color: var(--gray-600); margin-top: 2px; }
+    #toast-bar { height: 3px; border-radius: 2px; margin-top: 12px; width: 100%; background: var(--blue); transform-origin: left; animation: none; }
+    @keyframes shrink { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+    /* ===== EXERCISE 1: HTML5 Base — HEADER ===== */
+    /* Navigation */
+    .site-header {
+      position: sticky; top: 0; z-index: 900;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.25rem;
+      color: var(--navy);
+    }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--blue) 0%, #5e89f7 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem;
+    }
+    .logo span { color: var(--blue); }
+
+    /* Exercise 2: Navigation */
+    .nav-links {
+      display: flex; align-items: center; gap: 4px;
+      list-style: none;
+    }
+    .nav-links a {
+      display: block; padding: 8px 16px;
+      font-family: 'Sora', sans-serif; font-size: .88rem; font-weight: 600;
+      color: var(--gray-600); border-radius: 8px;
+      transition: all var(--transition);
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--sky); color: var(--blue);
+    }
+    .nav-links .nav-ext a { display: flex; align-items: center; gap: 5px; }
+    .nav-cta { margin-left: 16px; }
+
+    .hamburger {
+      display: none; background: none; border: none;
+      font-size: 1.4rem; color: var(--navy); cursor: pointer; padding: 4px;
+    }
+
+    /* ===== HERO (Exercise 3 Welcome Banner) ===== */
+    #home {
+      background: linear-gradient(135deg, #0a1628 0%, #1a3a6c 60%, #1a56db 100%);
+      padding: 100px 0 80px; overflow: hidden; position: relative;
+    }
+    #home::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    /* Exercise 3: Welcome Banner with id */
+    #welcomeBanner {
+      position: relative; text-align: center; color: var(--white);
+      animation: fadeUp .8s ease both;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+
+    #welcomeBanner .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 30px; padding: 6px 18px;
+      font-size: .82rem; font-weight: 600; letter-spacing: .06em;
+      margin-bottom: 24px; color: #93c5fd;
+    }
+    #welcomeBanner h1 {
+      font-size: clamp(2.4rem,5vw,4rem); font-weight: 800;
+      line-height: 1.1; margin-bottom: 20px;
+    }
+    #welcomeBanner h1 em { font-style: normal; color: var(--accent); }
+
+    /* Exercise 3: .highlight class */
+    .highlight {
+      background: linear-gradient(90deg,var(--accent),#f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; font-weight: 700;
+    }
+
+    /* Exercise 3: Special offer inline span */
+    .offer-badge {
+      display: inline-block;
+      background: var(--accent); color: var(--navy);
+      font-family: 'Sora', sans-serif; font-weight: 700;
+      font-size: .85rem; padding: 4px 14px; border-radius: 20px;
+      margin: 8px 0 24px; animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.5);} 50%{box-shadow:0 0 0 10px rgba(245,158,11,0);} }
+
+    #welcomeBanner p { font-size: 1.1rem; color: rgba(255,255,255,.82); max-width: 580px; margin: 0 auto 36px; }
+
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 48px;
+      margin-top: 60px; padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,.12);
+      flex-wrap: wrap;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num { font-family: 'Sora',sans-serif; font-size: 2rem; font-weight: 800; color: #fff; }
+    .hero-stat .lbl { font-size: .8rem; color: rgba(255,255,255,.55); margin-top: 2px; }
+
+    /* ===== MAIN CONTENT ===== */
+    main { /* Main Content */ }
+
+    /* ===== EVENTS SECTION (Exercise 4 + cards) ===== */
+    #events { padding: 80px 0; }
+
+    .event-cards {
+      display: grid; grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+      gap: 24px; margin-bottom: 60px;
+    }
+    .event-card {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow); overflow: hidden;
+      transition: all var(--transition);
+    }
+    .event-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
+    .event-card-img { position: relative; height: 180px; overflow: hidden; }
+    .event-card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+    .event-card:hover .event-card-img img { transform: scale(1.06); }
+    .event-card-img .ec-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--blue); color: #fff;
+      font-family:'Sora',sans-serif; font-size:.72rem; font-weight:700;
+      padding: 4px 10px; border-radius: 6px;
+    }
+    .event-card-body { padding: 22px; }
+    .event-card-body h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .event-card-meta { display: flex; flex-wrap: wrap; gap: 10px; font-size: .8rem; color: var(--gray-600); margin-bottom: 16px; }
+    .event-card-meta span { display: flex; align-items: center; gap: 5px; }
+    .event-card-footer { display: flex; align-items: center; justify-content: space-between; }
+
+    /* Exercise 4: Image Gallery Table */
+    .gallery-title { font-family:'Sora',sans-serif; font-size:1.3rem; font-weight:700; color:var(--navy); margin-bottom:20px; }
+    .gallery-table { width: 100%; border-collapse: separate; border-spacing: 16px; margin: 0 -16px; }
+    .gallery-table td { width: 33.33%; vertical-align: top; }
+    .gallery-cell {
+      background: var(--white); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow);
+      transition: all var(--transition);
+    }
+    .gallery-cell:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+    /* CSS class for image borders — Exercise 4 */
+    .gallery-img {
+      width: 100%; height: 160px; object-fit: cover;
+      display: block;
+      border: 3px solid var(--blue);
+      border-radius: var(--radius) var(--radius) 0 0;
+      cursor: pointer;
+      transition: transform .3s ease;
+    }
+    .gallery-img:hover { transform: scale(1.03); }
+    .gallery-caption {
+      padding: 12px 14px; font-size: .82rem;
+      font-weight: 600; color: var(--navy);
+      border-top: 1px solid var(--gray-100);
+      text-align: center;
+    }
+
+    /* ===== REGISTRATION FORM (Exercise 5) ===== */
+    #contact { padding: 80px 0; background: var(--gray-100); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-family:'Sora',sans-serif; font-size:.82rem; font-weight:600;
+      color: var(--gray-800);
+    }
+    .form-group label .req { color: var(--red); margin-left: 3px; }
+    .form-control {
+      padding: 12px 16px; border-radius: 8px;
+      border: 1.5px solid var(--gray-200);
+      font-family: 'DM Sans', sans-serif; font-size: .95rem;
+      color: var(--gray-800); background: var(--white);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-control:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(26,86,219,.12);
+    }
+    .form-control.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(239,68,68,.12); }
+    .form-control.valid { border-color: var(--green); }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+    select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+
+    .char-counter { font-size: .75rem; color: var(--gray-400); text-align: right; }
+    .fee-display {
+      display: none; margin-top: 8px; padding: 10px 14px;
+      background: var(--sky); border-radius: 8px;
+      font-size: .85rem; color: var(--blue); font-weight: 600;
+    }
+    output#confirmMsg {
+      display: block; margin-top: 16px;
+      padding: 14px 18px; border-radius: 8px;
+      background: #d1fae5; color: #065f46;
+      font-family:'Sora',sans-serif; font-size:.9rem; font-weight:600;
+      display: none;
+    }
+
+    /* Phone validation hint */
+    .hint { font-size: .75rem; color: var(--gray-400); margin-top: 2px; }
+    .hint.error-hint { color: var(--red); }
+
+    /* ===== FEEDBACK (Exercise 6) ===== */
+    #feedback-section { padding: 80px 0; }
+    .feedback-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+    /* ===== VIDEO (Exercise 7) ===== */
+    #video-section { padding: 80px 0; background: var(--navy); }
+    #video-section .section-title { color: var(--white); }
+    #video-section .section-sub { color: rgba(255,255,255,.65); }
+    .video-wrapper {
+      border-radius: var(--radius); overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      position: relative;
+    }
+    .video-wrapper video { width: 100%; display: block; }
+    #videoStatus {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 8px; padding: 10px 18px;
+      color: rgba(255,255,255,.8); font-size: .88rem; margin-top: 18px;
+    }
+    #videoStatus.ready { background: rgba(16,185,129,.15); border-color: rgba(16,185,129,.4); color: #6ee7b7; }
+
+    /* ===== PREFERENCES (Exercise 8) ===== */
+    #preferences-section { padding: 80px 0; background: var(--gray-100); }
+    .pref-card { max-width: 560px; }
+    #savedPrefDisplay {
+      padding: 12px 16px; border-radius: 8px;
+      background: var(--sky); color: var(--blue);
+      font-weight: 600; font-size: .9rem; margin-top: 14px;
+      display: none;
+    }
+
+    /* ===== GEOLOCATION (Exercise 9) ===== */
+    #geo-section { padding: 80px 0; }
+    .geo-result {
+      margin-top: 20px; padding: 20px 24px;
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow); display: none;
+    }
+    .geo-coords { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 12px; }
+    .geo-coord { text-align: center; }
+    .geo-coord .val { font-family:'Sora',sans-serif; font-size:1.3rem; font-weight:800; color:var(--blue); }
+    .geo-coord .lbl { font-size:.75rem; color:var(--gray-400); text-transform:uppercase; letter-spacing:.06em; }
+    .geo-map-link { margin-top: 16px; }
+
+    /* ===== DEVTOOLS (Exercise 10) ===== */
+    #devtools-section { padding: 80px 0; background: var(--navy); }
+    #devtools-section .section-title { color: var(--white); }
+    .console-block {
+      background: #0d1117; border-radius: var(--radius);
+      padding: 24px; font-family: 'Courier New', monospace; font-size: .85rem;
+      line-height: 1.8; border: 1px solid #30363d;
+    }
+    .console-line { display: flex; gap: 14px; }
+    .console-line .prompt { color: #58a6ff; user-select: none; }
+    .console-line.log .code { color: #e6edf3; }
+    .console-line.info .code { color: #79c0ff; }
+    .console-line.warn .code { color: #e3b341; }
+    .console-line.error .code { color: #f85149; }
+    .console-line.group .code { color: #7ee787; }
+    .devtools-tips {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px;
+    }
+    .tip-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius); padding: 20px;
+    }
+    .tip-card h4 { font-family:'Sora',sans-serif; font-size:.9rem; font-weight:700; color:#e6edf3; margin-bottom:8px; }
+    .tip-card p { font-size: .82rem; color: rgba(255,255,255,.55); line-height: 1.6; }
+    .tip-card code { color: #79c0ff; background: rgba(121,192,255,.1); padding: 1px 6px; border-radius: 4px; font-size:.8rem; }
+
+    /* ===== IMAGE MODAL (Exercise 6 dblclick) ===== */
+    #imgModal {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,.85); display: none;
+      align-items: center; justify-content: center;
+    }
+    #imgModal.open { display: flex; }
+    #imgModal img { max-width: 90vw; max-height: 85vh; border-radius: var(--radius); box-shadow: var(--shadow-lg); }
+    #imgModal .close-modal {
+      position: absolute; top: 20px; right: 24px;
+      background: rgba(255,255,255,.15); border: none;
+      color: #fff; font-size: 1.4rem; width: 40px; height: 40px;
+      border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+    #imgModal .close-modal:hover { background: rgba(255,255,255,.3); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.65);
+      padding: 60px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .logo { color: #fff; margin-bottom: 16px; display: flex; }
+    .footer-brand p { font-size: .88rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 { font-family:'Sora',sans-serif; font-size:.88rem; font-weight:700; color:#fff; margin-bottom:16px; letter-spacing:.04em; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col ul li a { font-size:.85rem; color:rgba(255,255,255,.55); transition: color var(--transition); }
+    .footer-col ul li a:hover { color: var(--accent); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1); padding-top: 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .footer-bottom p { font-size: .82rem; }
+    .social-links { display: flex; gap: 10px; }
+    .social-links a {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.6); font-size: .9rem;
+      transition: all var(--transition);
+    }
+    .social-links a:hover { background: var(--blue); color: #fff; transform: translateY(-2px); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .feedback-grid { grid-template-columns: 1fr; }
+      .devtools-tips { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: block; }
+      .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 68px; left: 0; right: 0; background: #fff; padding: 16px; box-shadow: var(--shadow); }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .full { grid-column: 1; }
+      .gallery-table, .gallery-table tbody, .gallery-table tr, .gallery-table td { display: block; width: 100%; }
+      .gallery-table td { margin-bottom: 20px; }
+      .geo-coords { gap: 20px; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ===== SECTION DIVIDER ===== */
+    .divider { height: 1px; background: var(--gray-200); margin: 0; }
+  </style>
+</head>
+
+<body>
+
+<!-- =============================================
+     EXERCISE 1: HTML5 Base Template
+     - Proper DOCTYPE, lang, charset, viewport ✓
+     - Semantic HTML5 tags ✓
+     - Comments for Navigation, Main Content, Footer ✓
+     ============================================= -->
+
+<!-- ======================== NAVIGATION ======================== -->
+<header class="site-header">
+  <nav class="container nav-inner" aria-label="Main Navigation">
+    <!-- Logo -->
+    <a href="#home" class="logo" aria-label="CivicPulse Home">
+      <div class="logo-icon"><i class="fas fa-calendar-star"></i></div>
+      Civic<span>Pulse</span>
+    </a>
+
+    <!-- Exercise 2: Navigation Links with Internal + External + New Tab -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="active" aria-current="page">
+        <i class="fas fa-house"></i> Home
+      </a></li>
+      <li><a href="#events">
+        <i class="fas fa-calendar-days"></i> Events
+      </a></li>
+      <li><a href="#contact">
+        <i class="fas fa-envelope"></i> Contact
+      </a></li>
+      <!-- Exercise 2: External link opening in new tab -->
+      <li class="nav-ext"><a href="https://www.eventbrite.com" target="_blank" rel="noopener noreferrer">
+        <i class="fas fa-circle-question"></i> Help <i class="fas fa-arrow-up-right-from-square" style="font-size:.7rem;"></i>
+      </a></li>
+    </ul>
+
+    <a href="#contact" class="btn btn-primary btn-sm nav-cta">Register Now</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+</header>
+
+<!-- ======================== MAIN CONTENT ======================== -->
+<main>
+
+  <!-- ===================================================
+       EXERCISE 1: HTML5 Base Template — Hero / Home Section
+       EXERCISE 3: Welcome Banner with id, .highlight, inline span
+       =================================================== -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 1 &amp; 3</span>
+    HTML5 Base Template + Welcome Message with Styling and ID/Class
+  </div>
+
+  <section id="home" aria-labelledby="heroHeading">
+    <div class="container">
+      <!-- Exercise 3: id="welcomeBanner" -->
+      <div id="welcomeBanner">
+        <div class="hero-eyebrow">
+          <i class="fas fa-location-dot"></i> Hyderabad, Telangana
+        </div>
+
+        <h1 id="heroHeading">
+          Your City. Your<br /><em class="highlight">Community Events.</em>
+        </h1>
+
+        <!-- Exercise 3: Special offer with inline styled span -->
+        <span class="offer-badge"
+          style="font-style:italic; letter-spacing:.04em;">
+          🎉 Special Offer: First-Time Registration is FREE!
+        </span>
+
+        <!-- Exercise 3: .highlight class usage -->
+        <p>Discover, register, and participate in events that matter.
+          <strong class="highlight">CivicPulse</strong> connects neighbours,
+          celebrates culture, and builds the community you love.</p>
+
+        <div class="hero-actions">
+          <a href="#events" class="btn btn-accent">
+            <i class="fas fa-calendar-check"></i> Browse Events
+          </a>
+          <a href="#contact" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,.4);">
+            <i class="fas fa-pen-to-square"></i> Register Now
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num">240+</div><div class="lbl">Events This Year</div></div>
+          <div class="hero-stat"><div class="num">18K</div><div class="lbl">Community Members</div></div>
+          <div class="hero-stat"><div class="num">42</div><div class="lbl">Neighbourhoods</div></div>
+          <div class="hero-stat"><div class="num">98%</div><div class="lbl">Satisfaction Rate</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =======================================================
+       EXERCISE 2: Navigation and Linking
+       (Nav already implemented above; internal anchor links shown)
+       EXERCISE 4: Image Gallery for Community Events
+       ======================================================= -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 2</span>
+    Navigation and Linking — Internal, External, New Tab
+  </div>
+  <section style="background:var(--white);padding:32px 0;">
+    <div class="container">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+        <span style="font-family:'Sora',sans-serif;font-size:.85rem;font-weight:700;color:var(--gray-600);">Quick Links:</span>
+        <!-- Internal navigation using IDs -->
+        <a href="#home" class="btn btn-outline btn-sm"><i class="fas fa-house"></i> Home</a>
+        <a href="#events" class="btn btn-outline btn-sm"><i class="fas fa-calendar-days"></i> Events</a>
+        <a href="#contact" class="btn btn-outline btn-sm"><i class="fas fa-envelope"></i> Contact</a>
+        <!-- External link in new tab -->
+        <a href="https://www.eventbrite.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+          <i class="fas fa-circle-question"></i> Help &amp; Support <i class="fas fa-arrow-up-right-from-square" style="font-size:.7rem;"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="ex-strip">
+    <span class="ex-num">EX 4</span>
+    Image Gallery for Community Events — Table with 2 rows × 3 columns
+  </div>
+
+  <section id="events" aria-labelledby="eventsHeading">
+    <div style="padding:60px 0 0;">
+      <div class="container">
+        <span class="section-label"><i class="fas fa-calendar-days"></i> Upcoming Events</span>
+        <h2 class="section-title" id="eventsHeading">What's Happening Near You</h2>
+        <p class="section-sub">Hand-picked events across arts, sports, culture, tech, and more — all in your neighbourhood.</p>
+
+        <!-- Event feature cards (bonus) -->
+        <div class="event-cards" style="margin-bottom:48px;">
+          <article class="event-card">
+            <div class="event-card-img">
+              <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400&h=200&fit=crop" alt="Music Festival" loading="lazy" />
+              <span class="ec-badge">Free Entry</span>
+            </div>
+            <div class="event-card-body">
+              <h3>Summer Music Festival</h3>
+              <div class="event-card-meta">
+                <span><i class="fas fa-calendar"></i> June 15, 2026</span>
+                <span><i class="fas fa-location-dot"></i> Necklace Road</span>
+              </div>
+              <div class="event-card-footer">
+                <span class="badge badge-green">Music</span>
+                <a href="#contact" class="btn btn-primary btn-sm">Register</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event-card">
+            <div class="event-card-img">
+              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&h=200&fit=crop" alt="Tech Summit" loading="lazy" />
+              <span class="ec-badge">₹299</span>
+            </div>
+            <div class="event-card-body">
+              <h3>Community Tech Summit</h3>
+              <div class="event-card-meta">
+                <span><i class="fas fa-calendar"></i> July 3, 2026</span>
+                <span><i class="fas fa-location-dot"></i> HITEC City</span>
+              </div>
+              <div class="event-card-footer">
+                <span class="badge badge-blue">Technology</span>
+                <a href="#contact" class="btn btn-primary btn-sm">Register</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="event-card">
+            <div class="event-card-img">
+              <img src="https://images.unsplash.com/photo-1546552356-3bd61a5ea1e2?w=400&h=200&fit=crop" alt="Art Exhibition" loading="lazy" />
+              <span class="ec-badge">Free Entry</span>
+            </div>
+            <div class="event-card-body">
+              <h3>Local Art Exhibition</h3>
+              <div class="event-card-meta">
+                <span><i class="fas fa-calendar"></i> July 20, 2026</span>
+                <span><i class="fas fa-location-dot"></i> Jubilee Hills</span>
+              </div>
+              <div class="event-card-footer">
+                <span class="badge badge-amber">Arts</span>
+                <a href="#contact" class="btn btn-primary btn-sm">Register</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Exercise 4: Gallery Table — 2 rows × 3 columns -->
+        <p class="gallery-title"><i class="fas fa-images" style="color:var(--blue);margin-right:8px;"></i>Event Photo Gallery
+          <span style="font-size:.8rem;font-weight:400;color:var(--gray-400);margin-left:12px;">(Double-click any image to enlarge)</span>
+        </p>
+        <table class="gallery-table" role="grid" aria-label="Community Event Gallery">
+          <tbody>
+            <!-- Row 1 -->
+            <tr>
+              <td>
+                <div class="gallery-cell">
+                  <!-- Exercise 4: image with alt, title, CSS class, ondbclick (Exercise 6) -->
+                  <img
+                    src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=160&fit=crop"
+                    alt="Community Music Night — performers on stage under blue lights"
+                    title="Community Music Night"
+                    class="gallery-img"
+                    ondblclick="openModal(this)"
+                    loading="lazy"
+                  />
+                  <p class="gallery-caption"><i class="fas fa-music" style="color:var(--blue);"></i> Community Music Night</p>
+                </div>
+              </td>
+              <td>
+                <div class="gallery-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1471978559001-a71e7fd4d3ee?w=400&h=160&fit=crop"
+                    alt="Health and Wellness Camp — participants doing yoga outdoors"
+                    title="Health & Wellness Camp"
+                    class="gallery-img"
+                    ondblclick="openModal(this)"
+                    loading="lazy"
+                  />
+                  <p class="gallery-caption"><i class="fas fa-heart-pulse" style="color:var(--red);"></i> Health &amp; Wellness Camp</p>
+                </div>
+              </td>
+              <td>
+                <div class="gallery-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=160&fit=crop"
+                    alt="Annual Tech Conference — keynote speaker at podium"
+                    title="Annual Tech Conference"
+                    class="gallery-img"
+                    ondblclick="openModal(this)"
+                    loading="lazy"
+                  />
+                  <p class="gallery-caption"><i class="fas fa-microchip" style="color:var(--blue);"></i> Annual Tech Conference</p>
+                </div>
+              </td>
+            </tr>
+            <!-- Row 2 -->
+            <tr>
+              <td>
+                <div class="gallery-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&h=160&fit=crop"
+                    alt="Neighbourhood Cleanup Drive — volunteers picking litter in park"
+                    title="Neighbourhood Cleanup Drive"
+                    class="gallery-img"
+                    ondblclick="openModal(this)"
+                    loading="lazy"
+                  />
+                  <p class="gallery-caption"><i class="fas fa-leaf" style="color:var(--green);"></i> Neighbourhood Cleanup Drive</p>
+                </div>
+              </td>
+              <td>
+                <div class="gallery-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=160&fit=crop"
+                    alt="Cultural Dance Festival — dancers in traditional costumes"
+                    title="Cultural Dance Festival"
+                    class="gallery-img"
+                    ondblclick="openModal(this)"
+                    loading="lazy"
+                  />
+                  <p class="gallery-caption"><i class="fas fa-masks-theater" style="color:var(--accent);"></i> Cultural Dance Festival</p>
+                </div>
+              </td>
+              <td>
+                <div class="gallery-cell">
+                  <img
+                    src="https://images.unsplash.com/photo-1605289982774-9a6fef564df8?w=400&h=160&fit=crop"
+                    alt="Food Fair — colourful stalls with local cuisine"
+                    title="Local Food Fair"
+                    class="gallery-img"
+                    ondblclick="openModal(this)"
+                    loading="lazy"
+                  />
+                  <p class="gallery-caption"><i class="fas fa-utensils" style="color:var(--red);"></i> Local Food Fair</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider" style="margin-top:60px;"></div>
+
+  <!-- =======================================================
+       EXERCISE 5: Event Registration Form
+       =======================================================  -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 5</span>
+    Event Registration Form — Validation, Autofocus, Output Element
+  </div>
+
+  <section id="contact" aria-labelledby="regHeading">
+    <div class="container">
+      <span class="section-label"><i class="fas fa-pen-to-square"></i> Register</span>
+      <h2 class="section-title" id="regHeading">Event Registration</h2>
+      <p class="section-sub">Fill in your details to secure your spot. All fields marked <span style="color:var(--red);">*</span> are required.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+        <div class="card" style="padding:36px;">
+          <!-- Exercise 5: Registration Form -->
+          <form id="registrationForm" novalidate>
+            <div class="form-grid">
+
+              <!-- Name — autofocus (Exercise 5) -->
+              <div class="form-group">
+                <label for="regName">Full Name <span class="req">*</span></label>
+                <input
+                  type="text" id="regName" name="name"
+                  class="form-control"
+                  placeholder="e.g. Priya Sharma"
+                  required autofocus
+                  autocomplete="name"
+                />
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label for="regEmail">Email Address <span class="req">*</span></label>
+                <input
+                  type="email" id="regEmail" name="email"
+                  class="form-control"
+                  placeholder="priya@example.com"
+                  required
+                  autocomplete="email"
+                />
+              </div>
+
+              <!-- Phone (Exercise 6: onblur validation) -->
+              <div class="form-group">
+                <label for="regPhone">Phone Number <span class="req">*</span></label>
+                <input
+                  type="tel" id="regPhone" name="phone"
+                  class="form-control"
+                  placeholder="+91 98765 43210"
+                  required
+                  onblur="validatePhone(this)"
+                />
+                <span class="hint" id="phoneHint">Enter a 10-digit Indian mobile number</span>
+              </div>
+
+              <!-- Date -->
+              <div class="form-group">
+                <label for="regDate">Preferred Date <span class="req">*</span></label>
+                <input
+                  type="date" id="regDate" name="date"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <!-- Event Type (Exercise 6: onchange) -->
+              <div class="form-group full">
+                <label for="regEventType">Event Type <span class="req">*</span></label>
+                <select id="regEventType" name="eventType"
+                  class="form-control" required
+                  onchange="showEventFee(this)">
+                  <option value="">— Select an event —</option>
+                  <option value="music">🎵 Music Festival</option>
+                  <option value="tech">💻 Tech Summit</option>
+                  <option value="art">🎨 Art Exhibition</option>
+                  <option value="sports">⚽ Sports Tournament</option>
+                  <option value="food">🍽️ Food Fair</option>
+                  <option value="cultural">🎭 Cultural Program</option>
+                </select>
+                <!-- Exercise 6: onchange fee display -->
+                <div class="fee-display" id="feeDisplay">
+                  <i class="fas fa-tag"></i> <span id="feeText"></span>
+                </div>
+              </div>
+
+              <!-- Message (Exercise 6: keyup counter) -->
+              <div class="form-group full">
+                <label for="regMessage">Additional Message</label>
+                <textarea
+                  id="regMessage" name="message"
+                  class="form-control"
+                  placeholder="Any special requirements, dietary preferences, accessibility needs…"
+                  maxlength="300"
+                  onkeyup="updateCharCounter(this)"
+                ></textarea>
+                <div class="char-counter"><span id="charCount">0</span>/300</div>
+              </div>
+
+            </div>
+
+            <!-- Exercise 5: output element -->
+            <output id="confirmMsg" for="registrationForm"></output>
+
+            <!-- Exercise 6: onclick confirmation -->
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;"
+              onclick="handleFormSubmit(event)">
+              <i class="fas fa-paper-plane"></i> Submit Registration
+            </button>
+          </form>
+        </div>
+
+        <!-- Side info -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div class="card" style="padding:28px;background:var(--blue);color:#fff;">
+            <h3 style="font-family:'Sora',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:16px;color:#fff;">
+              <i class="fas fa-circle-info"></i> Why Register?
+            </h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+              <li style="display:flex;gap:10px;"><i class="fas fa-check-circle" style="color:#93c5fd;margin-top:3px;"></i><span>Get priority seating at all events</span></li>
+              <li style="display:flex;gap:10px;"><i class="fas fa-check-circle" style="color:#93c5fd;margin-top:3px;"></i><span>Receive personalised event recommendations</span></li>
+              <li style="display:flex;gap:10px;"><i class="fas fa-check-circle" style="color:#93c5fd;margin-top:3px;"></i><span>Exclusive early-bird discounts</span></li>
+              <li style="display:flex;gap:10px;"><i class="fas fa-check-circle" style="color:#93c5fd;margin-top:3px;"></i><span>Community newsletter &amp; event reminders</span></li>
+            </ul>
+          </div>
+          <div class="card" style="padding:28px;">
+            <h3 style="font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px;">
+              <i class="fas fa-phone" style="color:var(--blue);"></i> Need Help?
+            </h3>
+            <p style="font-size:.9rem;color:var(--gray-600);margin-bottom:12px;">Our team is available Monday–Saturday, 9 AM to 6 PM.</p>
+            <p><a href="mailto:support@civicpulse.in" style="font-weight:600;"><i class="fas fa-envelope"></i> support@civicpulse.in</a></p>
+            <p style="margin-top:6px;"><a href="tel:+914000000000" style="font-weight:600;"><i class="fas fa-phone"></i> +91 40 0000 0000</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =======================================================
+       EXERCISE 6: Event Feedback with Event Handling
+       =======================================================  -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 6</span>
+    Event Feedback — onblur, onchange, onclick, ondblclick, keyup
+  </div>
+
+  <section id="feedback-section" aria-labelledby="feedbackHeading">
+    <div class="container">
+      <span class="section-label"><i class="fas fa-star"></i> Feedback</span>
+      <h2 class="section-title" id="feedbackHeading">Share Your Experience</h2>
+      <p class="section-sub">Your feedback helps us improve every community event. All interactions below demonstrate JavaScript event handling.</p>
+
+      <div class="feedback-grid">
+        <div class="card">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:20px;">
+            <i class="fas fa-keyboard" style="color:var(--blue);"></i> Feedback Form
+          </h3>
+
+          <div class="form-group" style="margin-bottom:16px;">
+            <label for="fbPhone">Phone <span class="req">*</span></label>
+            <!-- onblur validation (Exercise 6) -->
+            <input type="tel" id="fbPhone" class="form-control"
+              placeholder="+91 98765 43210"
+              onblur="validatePhone(this, 'fbPhoneHint')"
+            />
+            <span class="hint" id="fbPhoneHint">Loses focus → validates phone format</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom:16px;">
+            <label for="fbEvent">Event Attended</label>
+            <!-- onchange fee display (Exercise 6) -->
+            <select id="fbEvent" class="form-control"
+              onchange="showEventFee(this, 'fbFeeDisplay', 'fbFeeText')">
+              <option value="">— Choose event —</option>
+              <option value="music">🎵 Music Festival</option>
+              <option value="tech">💻 Tech Summit</option>
+              <option value="art">🎨 Art Exhibition</option>
+              <option value="sports">⚽ Sports Tournament</option>
+              <option value="food">🍽️ Food Fair</option>
+              <option value="cultural">🎭 Cultural Program</option>
+            </select>
+            <div class="fee-display" id="fbFeeDisplay">
+              <i class="fas fa-tag"></i> <span id="fbFeeText"></span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:16px;">
+            <label for="fbText">Your Feedback</label>
+            <!-- keyup character counter (Exercise 6) -->
+            <textarea id="fbText" class="form-control"
+              placeholder="Write your experience here…"
+              maxlength="300"
+              onkeyup="updateCharCounter(this, 'fbCharCount')"
+            ></textarea>
+            <div class="char-counter"><span id="fbCharCount">0</span>/300</div>
+          </div>
+
+          <!-- onclick submit (Exercise 6) -->
+          <button class="btn btn-primary" style="width:100%;justify-content:center;"
+            onclick="submitFeedback(event)">
+            <i class="fas fa-paper-plane"></i> Submit Feedback
+          </button>
+        </div>
+
+        <div class="card">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:20px;">
+            <i class="fas fa-hand-pointer" style="color:var(--blue);"></i> ondblclick Gallery Demo
+          </h3>
+          <p style="font-size:.88rem;color:var(--gray-600);margin-bottom:20px;">
+            Double-click any image below to enlarge it (Exercise 6 — <code>ondblclick</code>):
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=300&h=180&fit=crop"
+                alt="Music Event" title="Double-click to enlarge"
+                class="gallery-img" style="border-radius:8px;height:130px;cursor:pointer;"
+                ondblclick="openModal(this)" />
+              <p style="font-size:.75rem;text-align:center;color:var(--gray-400);margin-top:6px;">Double-click ↑</p>
+            </div>
+            <div>
+              <img src="https://images.unsplash.com/photo-1546552356-3bd61a5ea1e2?w=300&h=180&fit=crop"
+                alt="Art Event" title="Double-click to enlarge"
+                class="gallery-img" style="border-radius:8px;height:130px;cursor:pointer;"
+                ondblclick="openModal(this)" />
+              <p style="font-size:.75rem;text-align:center;color:var(--gray-400);margin-top:6px;">Double-click ↑</p>
+            </div>
+          </div>
+
+          <div style="margin-top:24px;padding:16px;background:var(--gray-100);border-radius:8px;">
+            <p style="font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:8px;">
+              <i class="fas fa-code" style="color:var(--blue);"></i> Events Demonstrated:
+            </p>
+            <ul style="list-style:none;font-size:.8rem;color:var(--gray-600);display:flex;flex-direction:column;gap:5px;">
+              <li><code style="background:#e2e8f0;padding:1px 5px;border-radius:3px;">onblur</code> — Phone field validation on focus-leave</li>
+              <li><code style="background:#e2e8f0;padding:1px 5px;border-radius:3px;">onchange</code> — Event type → fee display</li>
+              <li><code style="background:#e2e8f0;padding:1px 5px;border-radius:3px;">onclick</code> — Submit button confirmation dialog</li>
+              <li><code style="background:#e2e8f0;padding:1px 5px;border-radius:3px;">ondblclick</code> — Image enlargement modal</li>
+              <li><code style="background:#e2e8f0;padding:1px 5px;border-radius:3px;">onkeyup</code> — Live character counter</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =======================================================
+       EXERCISE 7: Video Invite with Media Events
+       =======================================================  -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 7</span>
+    Video Invite with Media Events — oncanplay, onbeforeunload
+  </div>
+
+  <section id="video-section" aria-labelledby="videoHeading">
+    <div class="container">
+      <span class="section-label" style="background:rgba(255,255,255,.1);color:#93c5fd;"><i class="fas fa-video"></i> Video Invite</span>
+      <h2 class="section-title" id="videoHeading">Watch Our Community Invite</h2>
+      <p class="section-sub">Experience the spirit of CivicPulse through our community highlight reel.</p>
+
+      <div style="display:grid;grid-template-columns:3fr 2fr;gap:40px;align-items:center;">
+        <div>
+          <div class="video-wrapper">
+            <!-- Exercise 7: Video with oncanplay event -->
+            <video
+              id="communityVideo"
+              controls
+              preload="metadata"
+              poster="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=450&fit=crop"
+              oncanplay="videoReady()"
+              onplay="videoPlaying()"
+              onpause="videoPaused()"
+              onended="videoEnded()"
+              aria-label="Community Event Video Invite"
+            >
+              <!-- Using a public sample video -->
+              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+              <p style="color:#fff;padding:20px;">Your browser does not support HTML5 video.
+                <a href="https://www.w3schools.com/html/mov_bbb.mp4" style="color:#93c5fd;">Download the video</a>.
+              </p>
+            </video>
+          </div>
+
+          <!-- Exercise 7: Video status display -->
+          <div id="videoStatus">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <span id="videoStatusText">Loading video…</span>
+          </div>
+        </div>
+
+        <div style="color:rgba(255,255,255,.85);">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:16px;color:#fff;">
+            About This Invite
+          </h3>
+          <p style="font-size:.9rem;line-height:1.7;margin-bottom:20px;">
+            Join thousands of residents who come together each year for our flagship community events. This short film captures the joy, culture, and connection at the heart of CivicPulse.
+          </p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:.88rem;">
+            <li><i class="fas fa-clock" style="color:#93c5fd;margin-right:8px;"></i> Duration: 3 minutes 24 seconds</li>
+            <li><i class="fas fa-film" style="color:#93c5fd;margin-right:8px;"></i> Format: MP4 / H.264</li>
+            <li><i class="fas fa-shield-halved" style="color:#93c5fd;margin-right:8px;"></i> Safe for all audiences</li>
+          </ul>
+          <div style="margin-top:28px;padding:16px;background:rgba(255,255,255,.07);border-radius:10px;border:1px solid rgba(255,255,255,.12);">
+            <p style="font-size:.78rem;color:rgba(255,255,255,.55);font-family:'Sora',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;">Exercise 7 Note</p>
+            <p style="font-size:.82rem;color:rgba(255,255,255,.7);">
+              <code style="color:#93c5fd;">oncanplay</code> fires when enough data is loaded to begin playback.
+              <code style="color:#93c5fd;">onbeforeunload</code> warns if you try to leave the page while video is playing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =======================================================
+       EXERCISE 8: Saving User Preferences (localStorage)
+       =======================================================  -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 8</span>
+    Saving User Preferences — localStorage, sessionStorage
+  </div>
+
+  <section id="preferences-section" aria-labelledby="prefHeading">
+    <div class="container">
+      <span class="section-label"><i class="fas fa-sliders"></i> Preferences</span>
+      <h2 class="section-title" id="prefHeading">Your Event Preferences</h2>
+      <p class="section-sub">Select your preferred event type below. It will be saved locally and automatically restored when you revisit this page.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+        <div class="card pref-card">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:20px;">
+            <i class="fas fa-heart" style="color:var(--blue);"></i> Preferred Event Type
+          </h3>
+
+          <div class="form-group" style="margin-bottom:20px;">
+            <label for="prefEventType">Choose your favourite category</label>
+            <!-- Exercise 8: onchange saves to localStorage -->
+            <select id="prefEventType" class="form-control"
+              onchange="savePreference(this.value)">
+              <option value="">— Select preference —</option>
+              <option value="music">🎵 Music &amp; Entertainment</option>
+              <option value="tech">💻 Technology &amp; Innovation</option>
+              <option value="art">🎨 Arts &amp; Culture</option>
+              <option value="sports">⚽ Sports &amp; Fitness</option>
+              <option value="food">🍽️ Food &amp; Dining</option>
+              <option value="cultural">🎭 Cultural Programs</option>
+            </select>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="savePreference(document.getElementById('prefEventType').value)">
+              <i class="fas fa-floppy-disk"></i> Save Preference
+            </button>
+            <!-- Exercise 8: Clear Preferences button -->
+            <button class="btn btn-danger" onclick="clearPreferences()">
+              <i class="fas fa-trash"></i> Clear Preferences
+            </button>
+          </div>
+
+          <!-- Exercise 8: Display saved preference -->
+          <div id="savedPrefDisplay">
+            <i class="fas fa-check-circle"></i> Saved Preference: <span id="savedPrefText"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;">
+            <i class="fas fa-database" style="color:var(--blue);"></i> Storage Status
+          </h3>
+          <div id="storageStatus" style="display:flex;flex-direction:column;gap:10px;font-size:.88rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--gray-100);border-radius:8px;">
+              <span><i class="fas fa-hard-drive" style="color:var(--blue);margin-right:8px;"></i>localStorage</span>
+              <span id="lsStatus" class="badge badge-blue">—</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--gray-100);border-radius:8px;">
+              <span><i class="fas fa-clock" style="color:var(--green);margin-right:8px;"></i>sessionStorage</span>
+              <span id="ssStatus" class="badge badge-green">—</span>
+            </div>
+          </div>
+          <p style="font-size:.78rem;color:var(--gray-400);margin-top:16px;line-height:1.6;">
+            <strong>localStorage</strong> persists across browser sessions.<br/>
+            <strong>sessionStorage</strong> is cleared when the tab is closed.
+          </p>
+          <button class="btn btn-outline btn-sm" style="margin-top:16px;" onclick="updateStorageStatus()">
+            <i class="fas fa-rotate"></i> Refresh Status
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =======================================================
+       EXERCISE 9: Geolocation for Event Mapping
+       =======================================================  -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 9</span>
+    Geolocation for Event Mapping — navigator.geolocation
+  </div>
+
+  <section id="geo-section" aria-labelledby="geoHeading">
+    <div class="container">
+      <span class="section-label"><i class="fas fa-map-location-dot"></i> Geolocation</span>
+      <h2 class="section-title" id="geoHeading">Find Nearby Events</h2>
+      <p class="section-sub">Allow location access to discover community events happening close to you.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;">
+        <div class="card">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;">
+            <i class="fas fa-crosshairs" style="color:var(--blue);"></i> Detect My Location
+          </h3>
+          <p style="font-size:.88rem;color:var(--gray-600);margin-bottom:24px;">
+            We use your device's GPS for high-accuracy event discovery. Your location is never stored on our servers.
+          </p>
+
+          <!-- Exercise 9: Find Nearby Events button -->
+          <button class="btn btn-primary" id="geoBtn" onclick="findNearbyEvents()">
+            <i class="fas fa-location-crosshairs"></i> Find Nearby Events
+          </button>
+
+          <!-- Exercise 9: Display latitude and longitude -->
+          <div class="geo-result" id="geoResult">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+              <i class="fas fa-circle-check" style="color:var(--green);font-size:1.2rem;"></i>
+              <span style="font-family:'Sora',sans-serif;font-weight:700;font-size:.95rem;">Location Detected!</span>
+            </div>
+            <div class="geo-coords">
+              <div class="geo-coord">
+                <div class="val" id="geoLat">—</div>
+                <div class="lbl">Latitude</div>
+              </div>
+              <div class="geo-coord">
+                <div class="val" id="geoLng">—</div>
+                <div class="lbl">Longitude</div>
+              </div>
+              <div class="geo-coord">
+                <div class="val" id="geoAcc">—</div>
+                <div class="lbl">Accuracy (m)</div>
+              </div>
+            </div>
+            <div class="geo-map-link">
+              <a id="geoMapLink" href="#" target="_blank" class="btn btn-outline btn-sm">
+                <i class="fas fa-map"></i> View on Google Maps
+              </a>
+            </div>
+          </div>
+
+          <!-- Error display -->
+          <div id="geoError" style="display:none;margin-top:16px;padding:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;color:var(--red);font-size:.88rem;">
+            <i class="fas fa-triangle-exclamation"></i> <span id="geoErrorText"></span>
+          </div>
+        </div>
+
+        <div class="card" style="background:var(--navy);color:#fff;">
+          <h3 style="font-family:'Sora',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;color:#fff;">
+            <i class="fas fa-map-pin" style="color:var(--accent);"></i> Events Near You
+          </h3>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:20px;">
+            Once you share your location, we'll surface events within 10 km of you.
+          </p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;">
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <i class="fas fa-location-dot" style="color:var(--accent);margin-top:3px;"></i>
+              <div>
+                <div style="font-weight:600;font-size:.9rem;">Banjara Hills Open Mic</div>
+                <div style="font-size:.78rem;color:rgba(255,255,255,.5);">1.2 km away · Tonight 7 PM</div>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <i class="fas fa-location-dot" style="color:var(--accent);margin-top:3px;"></i>
+              <div>
+                <div style="font-weight:600;font-size:.9rem;">Jubilee Hills Yoga Camp</div>
+                <div style="font-size:.78rem;color:rgba(255,255,255,.5);">2.8 km away · Tomorrow 6 AM</div>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <i class="fas fa-location-dot" style="color:var(--accent);margin-top:3px;"></i>
+              <div>
+                <div style="font-weight:600;font-size:.9rem;">HITEC City Tech Meetup</div>
+                <div style="font-size:.78rem;color:rgba(255,255,255,.5);">4.1 km away · Sat 10 AM</div>
+              </div>
+            </li>
+            <li style="display:flex;gap:12px;align-items:flex-start;">
+              <i class="fas fa-location-dot" style="color:var(--accent);margin-top:3px;"></i>
+              <div>
+                <div style="font-weight:600;font-size:.9rem;">Necklace Road Food Fest</div>
+                <div style="font-size:.78rem;color:rgba(255,255,255,.5);">6.5 km away · Weekend</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- =======================================================
+       EXERCISE 10: Debugging with Chrome DevTools
+       =======================================================  -->
+  <div class="ex-strip">
+    <span class="ex-num">EX 10</span>
+    Debugging with Chrome DevTools — console.log examples &amp; testing guide
+  </div>
+
+  <section id="devtools-section" aria-labelledby="devtoolsHeading">
+    <div class="container">
+      <span class="section-label" style="background:rgba(255,255,255,.08);color:#93c5fd;">
+        <i class="fas fa-bug"></i> DevTools
+      </span>
+      <h2 class="section-title" id="devtoolsHeading">Debugging with Chrome DevTools</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,.6);">
+        Open Chrome DevTools (<kbd style="background:rgba(255,255,255,.1);border-radius:4px;padding:2px 7px;font-size:.82rem;color:#e6edf3;">F12</kbd> or <kbd style="background:rgba(255,255,255,.1);border-radius:4px;padding:2px 7px;font-size:.82rem;color:#e6edf3;">Ctrl+Shift+I</kbd>) to see live console output.
+      </p>
+
+      <!-- Console output visualisation -->
+      <div class="console-block" aria-label="Console output preview">
+        <div class="console-line group">
+          <span class="prompt">▶</span>
+          <span class="code">// ===== CivicPulse — Exercise 10: DevTools Debugging =====</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("🏙️ CivicPulse Portal loaded successfully");</span>
+        </div>
+        <div class="console-line info">
+          <span class="prompt">›</span>
+          <span class="code">console.info("Exercise 1: HTML5 Base Template initialised");</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("Exercise 2: Navigation links:", document.querySelectorAll('.nav-links a').length, "links");</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("Exercise 3: welcomeBanner element:", document.getElementById('welcomeBanner'));</span>
+        </div>
+        <div class="console-line info">
+          <span class="prompt">›</span>
+          <span class="code">console.info("Exercise 4: Gallery images loaded:", document.querySelectorAll('.gallery-img').length);</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("Exercise 5: Form element:", document.getElementById('registrationForm'));</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("Exercise 6: Event handlers — onblur, onchange, onclick, ondblclick, onkeyup ✓");</span>
+        </div>
+        <div class="console-line info">
+          <span class="prompt">›</span>
+          <span class="code">console.info("Exercise 7: Video element:", document.getElementById('communityVideo'));</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("Exercise 8: localStorage preference:", localStorage.getItem('civicpulse_event_pref'));</span>
+        </div>
+        <div class="console-line log">
+          <span class="prompt">›</span>
+          <span class="code">console.log("Exercise 9: Geolocation supported:", 'geolocation' in navigator);</span>
+        </div>
+        <div class="console-line warn">
+          <span class="prompt">›</span>
+          <span class="code">console.warn("Exercise 10: Always remove debug logs before production deployment!");</span>
+        </div>
+        <div class="console-line error">
+          <span class="prompt">›</span>
+          <span class="code">// console.error() — simulated: try submitting empty form to trigger validation errors</span>
+        </div>
+      </div>
+
+      <!-- Run DevTools Demo button -->
+      <div style="margin-top:20px;">
+        <button class="btn btn-accent" onclick="runDevToolsDemo()">
+          <i class="fas fa-play"></i> Run Console Demo (open DevTools to see output)
+        </button>
+      </div>
+
+      <!-- Tips cards -->
+      <div class="devtools-tips">
+        <div class="tip-card">
+          <h4><i class="fas fa-terminal" style="color:#58a6ff;margin-right:8px;"></i> Console Panel</h4>
+          <p>Press <code>F12</code> → Console tab. You'll see all <code>console.log()</code>, <code>console.info()</code>, <code>console.warn()</code>, and <code>console.error()</code> outputs from this page in real time.</p>
+        </div>
+        <div class="tip-card">
+          <h4><i class="fas fa-eye" style="color:#58a6ff;margin-right:8px;"></i> Elements Panel</h4>
+          <p>Inspect any element by right-clicking → "Inspect". You can live-edit the DOM, modify CSS properties, and see how changes affect layout immediately.</p>
+        </div>
+        <div class="tip-card">
+          <h4><i class="fas fa-network-wired" style="color:#58a6ff;margin-right:8px;"></i> Network Panel</h4>
+          <p>Switch to the Network tab and reload the page to see all HTTP requests — HTML, CSS, fonts, images, and video — with timing and size data.</p>
+        </div>
+        <div class="tip-card">
+          <h4><i class="fas fa-database" style="color:#58a6ff;margin-right:8px;"></i> Application Panel</h4>
+          <p>Go to Application → Storage → <code>localStorage</code> to see the event preference you saved in Exercise 8. You can view, edit, and delete keys here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ======================== FOOTER ======================== -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#home" class="logo">
+          <div class="logo-icon"><i class="fas fa-calendar-star"></i></div>
+          Civic<span style="color:var(--accent);">Pulse</span>
+        </a>
+        <p>Bringing communities together through meaningful, well-organised local events. Discover what's happening in your neighbourhood.</p>
+        <div class="social-links" style="margin-top:20px;">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#contact">Register</a></li>
+          <li><a href="#feedback-section">Feedback</a></li>
+          <li><a href="#geo-section">Nearby Events</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Event Types</h4>
+        <ul>
+          <li><a href="#events">Music &amp; Arts</a></li>
+          <li><a href="#events">Technology</a></li>
+          <li><a href="#events">Sports</a></li>
+          <li><a href="#events">Food &amp; Culture</a></li>
+          <li><a href="#events">Wellness</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <ul>
+          <li><a href="mailto:support@civicpulse.in"><i class="fas fa-envelope" style="width:16px;"></i> support@civicpulse.in</a></li>
+          <li><a href="tel:+914000000000"><i class="fas fa-phone" style="width:16px;"></i> +91 40 0000 0000</a></li>
+          <li><a href="#geo-section"><i class="fas fa-location-dot" style="width:16px;"></i> Hyderabad, Telangana</a></li>
+          <li><a href="https://www.eventbrite.com" target="_blank" rel="noopener"><i class="fas fa-circle-question" style="width:16px;"></i> Help Centre</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 CivicPulse Community Event Portal. All rights reserved.</p>
+      <p style="font-size:.78rem;">
+        Built with <i class="fas fa-heart" style="color:var(--red);"></i> using HTML5 · CSS3 · Vanilla JavaScript
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== IMAGE MODAL (Exercise 6: ondblclick) ===== -->
+<div id="imgModal" role="dialog" aria-modal="true" aria-label="Enlarged event image" onclick="closeModalOnBackdrop(event)">
+  <button class="close-modal" onclick="closeModal()" aria-label="Close modal">
+    <i class="fas fa-xmark"></i>
+  </button>
+  <img id="modalImg" src="" alt="Enlarged event image" />
+</div>
+
+<!-- ===== TOAST NOTIFICATION ===== -->
+<div id="toast" role="alert" aria-live="polite">
+  <span class="toast-icon" id="toastIcon"></span>
+  <div class="toast-body">
+    <div class="toast-title" id="toastTitle"></div>
+    <div class="toast-msg" id="toastMsg"></div>
+  </div>
+  <div id="toast-bar"></div>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT — All exercises
+     Exercise 10: console.log + DevTools comments
+     ============================================= -->
+<script>
+  // ============================================================
+  // Exercise 10: console.log examples for Chrome DevTools testing
+  // Open DevTools (F12 → Console) to see these outputs
+  // ============================================================
+  console.log("🏙️ CivicPulse Portal loaded successfully");
+  console.info("📋 Exercise 1: HTML5 Base Template initialised with DOCTYPE, lang, charset, viewport");
+  console.log("🔗 Exercise 2: Navigation links found:", document.querySelectorAll('.nav-links a').length);
+  console.log("🎨 Exercise 3: welcomeBanner element →", document.getElementById('welcomeBanner'));
+  console.info("🖼️ Exercise 4: Gallery images →", document.querySelectorAll('.gallery-img').length, "images loaded");
+  console.log("📝 Exercise 5: Registration form →", document.getElementById('registrationForm'));
+  console.log("⚡ Exercise 6: Event handlers (onblur, onchange, onclick, ondblclick, onkeyup) registered ✓");
+  console.log("🎬 Exercise 7: Video element →", document.getElementById('communityVideo'));
+  console.log("💾 Exercise 8: localStorage preference →", localStorage.getItem('civicpulse_event_pref') || 'none saved yet');
+  console.log("📍 Exercise 9: Geolocation API supported →", 'geolocation' in navigator);
+  console.warn("🔧 Exercise 10: Open DevTools → Console to see all debug output. Network tab to inspect requests. Application tab for localStorage.");
+  // Breakpoint hint: Set a breakpoint inside handleFormSubmit() to inspect form data
+  console.log("💡 TIP: Use 'Ctrl+Shift+I' > Sources > to set breakpoints in JavaScript");
+
+  // ============================================================
+  // UTILITY: Toast notification
+  // ============================================================
+  let toastTimer;
+  function showToast(type, title, msg, duration = 4000) {
+    const t = document.getElementById('toast');
+    const icon = document.getElementById('toastIcon');
+    const ttl = document.getElementById('toastTitle');
+    const tm = document.getElementById('toastMsg');
+    const bar = document.getElementById('toast-bar');
+
+    const icons = { success: 'fas fa-circle-check', error: 'fas fa-circle-xmark', info: 'fas fa-circle-info' };
+    const colors = { success: 'var(--green)', error: 'var(--red)', info: 'var(--blue)' };
+
+    icon.className = `toast-icon ${type}`;
+    icon.innerHTML = `<i class="${icons[type] || icons.info}"></i>`;
+    ttl.textContent = title;
+    tm.textContent = msg;
+    bar.style.background = colors[type] || colors.info;
+    bar.style.animation = 'none';
+    bar.offsetHeight; // reflow
+    bar.style.animation = `shrink ${duration}ms linear forwards`;
+
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), duration + 300);
+    console.log(`[Toast] ${type.toUpperCase()}: ${title} — ${msg}`);
+  }
+
+  // ============================================================
+  // Exercise 2: Hamburger menu
+  // ============================================================
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    hamburger.innerHTML = navLinks.classList.contains('open')
+      ? '<i class="fas fa-xmark"></i>'
+      : '<i class="fas fa-bars"></i>';
+  });
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // ============================================================
+  // Exercise 5 + 6: Phone validation (onblur)
+  // ============================================================
+  function validatePhone(input, hintId) {
+    const hId = hintId || 'phoneHint';
+    const hint = document.getElementById(hId);
+    // Remove all non-digit characters for validation
+    const digits = input.value.replace(/\D/g, '');
+    const isValid = digits.length === 10 || (digits.length === 12 && digits.startsWith('91'));
+
+    if (input.value.trim() === '') {
+      input.classList.remove('valid', 'error');
+      if (hint) { hint.className = 'hint'; hint.textContent = 'Enter a 10-digit Indian mobile number'; }
+      return false;
+    }
+
+    if (isValid) {
+      input.classList.remove('error'); input.classList.add('valid');
+      if (hint) { hint.className = 'hint'; hint.textContent = '✓ Valid phone number'; hint.style.color = 'var(--green)'; }
+      console.log("Exercise 6 [onblur]: Phone validated →", input.value, "✓");
+      return true;
+    } else {
+      input.classList.remove('valid'); input.classList.add('error');
+      if (hint) { hint.className = 'hint error-hint'; hint.textContent = '✗ Please enter a valid 10-digit number'; hint.style.color = 'var(--red)'; }
+      console.warn("Exercise 6 [onblur]: Phone validation failed →", input.value);
+      return false;
+    }
+  }
+
+  // ============================================================
+  // Exercise 6: onchange — Event type fee display
+  // ============================================================
+  const fees = {
+    music: '₹0 — Free Entry 🎉',
+    tech: '₹299 per person',
+    art: '₹0 — Free Entry 🎉',
+    sports: '₹149 per person',
+    food: '₹99 per person',
+    cultural: '₹0 — Free Entry 🎉'
+  };
+
+  function showEventFee(select, displayId, textId) {
+    const dId = displayId || 'feeDisplay';
+    const tId = textId || 'feeText';
+    const display = document.getElementById(dId);
+    const text = document.getElementById(tId);
+    if (!display || !text) return;
+
+    if (select.value && fees[select.value]) {
+      text.textContent = `Registration Fee: ${fees[select.value]}`;
+      display.style.display = 'block';
+      console.log(`Exercise 6 [onchange]: Event selected → ${select.value}, Fee → ${fees[select.value]}`);
+      // Exercise 8: save to sessionStorage
+      sessionStorage.setItem('civicpulse_session_event', select.value);
+      updateStorageStatus();
+    } else {
+      display.style.display = 'none';
+    }
+  }
+
+  // ============================================================
+  // Exercise 6: onkeyup — Character counter
+  // ============================================================
+  function updateCharCounter(textarea, counterId) {
+    const cId = counterId || 'charCount';
+    const counter = document.getElementById(cId);
+    if (counter) {
+      counter.textContent = textarea.value.length;
+      const pct = textarea.value.length / parseInt(textarea.getAttribute('maxlength'));
+      counter.style.color = pct > 0.8 ? 'var(--red)' : pct > 0.6 ? 'var(--accent)' : 'var(--gray-400)';
+    }
+  }
+
+  // ============================================================
+  // Exercise 5 + 6: Form submit (onclick)
+  // ============================================================
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const phone = document.getElementById('regPhone').value.trim();
+    const date = document.getElementById('regDate').value;
+    const eventType = document.getElementById('regEventType').value;
+    const output = document.getElementById('confirmMsg');
+
+    console.log("Exercise 5/6 [onclick]: Form submit attempted", { name, email, phone, date, eventType });
+
+    // Basic validation
+    if (!name || !email || !phone || !date || !eventType) {
+      showToast('error', 'Incomplete Form', 'Please fill in all required fields before submitting.');
+      console.error("Exercise 5: Form validation failed — missing required fields");
+      output.style.display = 'none';
+      return;
+    }
+
+    // Exercise 6: onclick confirmation
+    const confirmed = confirm(`Confirm Registration?\n\nName: ${name}\nEvent: ${eventType}\nDate: ${date}\n\nClick OK to confirm.`);
+    if (!confirmed) {
+      console.log("Exercise 6 [onclick]: User cancelled registration");
+      return;
+    }
+
+    // Exercise 5: Show confirmation using output element
+    output.style.display = 'block';
+    output.innerHTML = `<i class="fas fa-circle-check"></i> ✅ Registration confirmed for <strong>${name}</strong> → <em>${eventType.toUpperCase()}</em> on ${date}. A confirmation email will be sent to ${email}.`;
+    showToast('success', 'Registration Confirmed!', `Welcome, ${name}! Your spot is reserved.`);
+    console.log("Exercise 5: Registration successful →", { name, email, eventType, date });
+
+    // Save to localStorage (Exercise 8)
+    localStorage.setItem('civicpulse_event_pref', eventType);
+    updateStorageStatus();
+    document.getElementById('registrationForm').reset();
+    document.getElementById('charCount').textContent = '0';
+  }
+
+  // ============================================================
+  // Exercise 6: Feedback submit
+  // ============================================================
+  function submitFeedback(e) {
+    e.preventDefault();
+    const phone = document.getElementById('fbPhone').value.trim();
+    const fbText = document.getElementById('fbText').value.trim();
+    if (!phone || !fbText) {
+      showToast('error', 'Incomplete Feedback', 'Please enter your phone and feedback message.');
+      return;
+    }
+    if (!validatePhone(document.getElementById('fbPhone'), 'fbPhoneHint')) {
+      showToast('error', 'Invalid Phone', 'Please enter a valid 10-digit phone number.');
+      return;
+    }
+    const confirmed = confirm("Submit your feedback?\n\nClick OK to confirm.");
+    if (!confirmed) return;
+    showToast('success', 'Feedback Submitted!', 'Thank you for helping us improve. We appreciate your time.');
+    document.getElementById('fbPhone').value = '';
+    document.getElementById('fbText').value = '';
+    document.getElementById('fbCharCount').textContent = '0';
+    document.getElementById('fbEvent').value = '';
+    document.getElementById('fbFeeDisplay').style.display = 'none';
+    console.log("Exercise 6: Feedback submitted successfully");
+  }
+
+  // ============================================================
+  // Exercise 6: ondblclick — Image modal
+  // ============================================================
+  function openModal(img) {
+    const modal = document.getElementById('imgModal');
+    const modalImg = document.getElementById('modalImg');
+    // Use a higher-res version if available
+    modalImg.src = img.src.replace(/w=\d+&h=\d+/, 'w=1200&h=800');
+    modalImg.alt = img.alt;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    console.log("Exercise 6 [ondblclick]: Image modal opened →", img.alt);
+  }
+
+  function closeModal() {
+    document.getElementById('imgModal').classList.remove('open');
+    document.body.style.overflow = '';
+    console.log("Exercise 6: Image modal closed");
+  }
+
+  function closeModalOnBackdrop(e) {
+    if (e.target === document.getElementById('imgModal')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ============================================================
+  // Exercise 7: Video media events
+  // ============================================================
+  function videoReady() {
+    // Exercise 7: oncanplay — Video ready to play
+    const status = document.getElementById('videoStatus');
+    const text = document.getElementById('videoStatusText');
+    status.className = 'ready';
+    status.innerHTML = '<i class="fas fa-circle-check"></i> <span>Video ready to play</span>';
+    console.log("Exercise 7 [oncanplay]: Video is ready to play ✓");
+  }
+
+  function videoPlaying() {
+    document.getElementById('videoStatusText').textContent = 'Now playing…';
+    console.log("Exercise 7 [onplay]: Video playback started");
+  }
+
+  function videoPaused() {
+    document.getElementById('videoStatusText').textContent = 'Video paused';
+    console.log("Exercise 7 [onpause]: Video paused");
+  }
+
+  function videoEnded() {
+    document.getElementById('videoStatusText').textContent = 'Playback complete';
+    console.log("Exercise 7 [onended]: Video finished playing");
+  }
+
+  // Exercise 7: onbeforeunload — warn if video is playing
+  window.addEventListener('beforeunload', function(e) {
+    const video = document.getElementById('communityVideo');
+    if (video && !video.paused && !video.ended) {
+      // onbeforeunload warning
+      e.preventDefault();
+      e.returnValue = 'The video is still playing. Are you sure you want to leave?';
+      console.warn("Exercise 7 [onbeforeunload]: User attempted to leave while video is playing");
+      return e.returnValue;
+    }
+  });
+
+  // ============================================================
+  // Exercise 8: Save / Load / Clear Preferences (localStorage)
+  // ============================================================
+  const eventLabels = {
+    music: '🎵 Music & Entertainment',
+    tech: '💻 Technology & Innovation',
+    art: '🎨 Arts & Culture',
+    sports: '⚽ Sports & Fitness',
+    food: '🍽️ Food & Dining',
+    cultural: '🎭 Cultural Programs'
+  };
+
+  function savePreference(value) {
+    if (!value) { showToast('error', 'No Selection', 'Please choose an event type first.'); return; }
+    localStorage.setItem('civicpulse_event_pref', value);
+    sessionStorage.setItem('civicpulse_session_event', value);
+    updateStorageStatus();
+    showSavedPref(value);
+    showToast('success', 'Preference Saved!', `Your preference "${eventLabels[value] || value}" has been saved.`);
+    console.log("Exercise 8: Preference saved to localStorage →", value);
+  }
+
+  function showSavedPref(value) {
+    const disp = document.getElementById('savedPrefDisplay');
+    const text = document.getElementById('savedPrefText');
+    if (value && eventLabels[value]) {
+      text.textContent = eventLabels[value];
+      disp.style.display = 'block';
+    } else {
+      disp.style.display = 'none';
+    }
+  }
+
+  function clearPreferences() {
+    // Exercise 8: Clear localStorage and sessionStorage
+    localStorage.removeItem('civicpulse_event_pref');
+    sessionStorage.clear();
+    document.getElementById('prefEventType').value = '';
+    document.getElementById('savedPrefDisplay').style.display = 'none';
+    updateStorageStatus();
+    showToast('info', 'Preferences Cleared', 'localStorage and sessionStorage have been cleared.');
+    console.log("Exercise 8: localStorage and sessionStorage cleared");
+  }
+
+  function updateStorageStatus() {
+    const lsVal = localStorage.getItem('civicpulse_event_pref');
+    const ssVal = sessionStorage.getItem('civicpulse_session_event');
+    const lsEl = document.getElementById('lsStatus');
+    const ssEl = document.getElementById('ssStatus');
+    if (lsEl) lsEl.textContent = lsVal ? `"${lsVal}"` : 'Empty';
+    if (ssEl) ssEl.textContent = ssVal ? `"${ssVal}"` : 'Empty';
+  }
+
+  // Exercise 8: Load saved preference on page load
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('civicpulse_event_pref');
+    if (saved) {
+      // Preselect in both dropdowns
+      ['regEventType', 'prefEventType'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = saved;
+      });
+      showSavedPref(saved);
+      console.log("Exercise 8: Preference loaded from localStorage →", saved);
+    }
+    updateStorageStatus();
+
+    // Set min date for form
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('regDate');
+    if (dateInput) dateInput.min = today;
+  });
+
+  // ============================================================
+  // Exercise 9: Geolocation — navigator.geolocation
+  // ============================================================
+  function findNearbyEvents() {
+    const btn = document.getElementById('geoBtn');
+    const result = document.getElementById('geoResult');
+    const errorEl = document.getElementById('geoError');
+    const errorText = document.getElementById('geoErrorText');
+
+    // Hide previous results
+    result.style.display = 'none';
+    errorEl.style.display = 'none';
+
+    // Check support
+    if (!('geolocation' in navigator)) {
+      errorEl.style.display = 'block';
+      errorText.textContent = 'Geolocation is not supported by your browser.';
+      showToast('error', 'Not Supported', 'Your browser does not support Geolocation.');
+      console.error("Exercise 9: Geolocation not supported");
+      return;
+    }
+
+    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Detecting…';
+    btn.disabled = true;
+    console.log("Exercise 9: Requesting geolocation…");
+
+    // Exercise 9: navigator.geolocation.getCurrentPosition with high accuracy
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        // Success callback
+        const lat = position.coords.latitude.toFixed(6);
+        const lng = position.coords.longitude.toFixed(6);
+        const acc = Math.round(position.coords.accuracy);
+
+        document.getElementById('geoLat').textContent = lat;
+        document.getElementById('geoLng').textContent = lng;
+        document.getElementById('geoAcc').textContent = acc;
+        document.getElementById('geoMapLink').href =
+          `https://www.google.com/maps?q=${lat},${lng}`;
+
+        result.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-location-crosshairs"></i> Find Nearby Events';
+        btn.disabled = false;
+        showToast('success', 'Location Detected!', `Lat: ${lat}, Lng: ${lng}`);
+        console.log(`Exercise 9 [geolocation]: Position → Lat: ${lat}, Lng: ${lng}, Accuracy: ${acc}m`);
+      },
+      function(error) {
+        // Exercise 9: Error handling
+        let msg;
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            msg = 'Location permission denied. Please allow location access in your browser settings.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            msg = 'Location information is currently unavailable. Please try again.';
+            break;
+          case error.TIMEOUT:
+            msg = 'Location request timed out. Please try again.';
+            break;
+          default:
+            msg = 'An unknown error occurred while retrieving your location.';
+        }
+        errorEl.style.display = 'block';
+        errorText.textContent = msg;
+        btn.innerHTML = '<i class="fas fa-location-crosshairs"></i> Find Nearby Events';
+        btn.disabled = false;
+        showToast('error', 'Location Error', msg);
+        console.error("Exercise 9 [geolocation error]:", error.code, msg);
+      },
+      // Exercise 9: High accuracy options
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  }
+
+  // ============================================================
+  // Exercise 10: DevTools demo function
+  // ============================================================
+  function runDevToolsDemo() {
+    // Exercise 10: Various console methods
+    console.group("🔍 CivicPulse — DevTools Demo (Exercise 10)");
+    console.log("📄 Page Title:", document.title);
+    console.log("🌐 URL:", window.location.href);
+    console.log("📏 Viewport:", window.innerWidth + "×" + window.innerHeight);
+    console.info("ℹ️ User Agent:", navigator.userAgent.substring(0, 80) + "…");
+    console.log("🖼️ Images on page:", document.images.length);
+    console.log("🔗 Links on page:", document.links.length);
+    console.log("📝 Forms on page:", document.forms.length);
+    console.log("💾 localStorage keys:", Object.keys(localStorage));
+    console.log("⏱️ sessionStorage keys:", Object.keys(sessionStorage));
+    console.warn("⚠️ This is a console.warn() example — check browser compatibility");
+    console.error("🔴 This is a console.error() example — used for caught errors in production");
+    console.table([
+      { Exercise: "1", Feature: "HTML5 Base Template", Status: "✓" },
+      { Exercise: "2", Feature: "Navigation & Linking", Status: "✓" },
+      { Exercise: "3", Feature: "Welcome Banner", Status: "✓" },
+      { Exercise: "4", Feature: "Image Gallery Table", Status: "✓" },
+      { Exercise: "5", Feature: "Registration Form", Status: "✓" },
+      { Exercise: "6", Feature: "Event Handling", Status: "✓" },
+      { Exercise: "7", Feature: "Video Events", Status: "✓" },
+      { Exercise: "8", Feature: "localStorage", Status: "✓" },
+      { Exercise: "9", Feature: "Geolocation", Status: "✓" },
+      { Exercise: "10", Feature: "DevTools Debugging", Status: "✓" }
+    ]);
+    console.groupEnd();
+    showToast('info', 'DevTools Demo Run!', 'Open the Console tab (F12) to see all output.');
+  }
+</script>
+
+</body>
+</html>
