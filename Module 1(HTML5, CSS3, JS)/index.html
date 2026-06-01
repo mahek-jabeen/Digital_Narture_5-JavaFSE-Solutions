@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<!-- Exercise 1 – HTML5 Base Template: DOCTYPE and lang attribute -->
+<html lang="en">
+<head>
+  <!-- Exercise 1 – HTML5 Base Template: charset and viewport meta tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Local Community Event Portal – Find and register for events near you." />
+  <title>CommunityHub | Local Event Portal</title>
+
+  <!-- =====================================================================
+       CSS EXERCISE 5 – TYPOGRAPHY: Google Fonts
+       Playfair Display (display/headings) + DM Sans (body)
+       ===================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- =====================================================================
+       CSS EXERCISE 1 – EXTERNAL STYLESHEET
+       All production styles live in styles.css (external stylesheet).
+       To verify it loads: DevTools (F12) > Network > reload > find styles.css > Status 200
+       ===================================================================== -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- =====================================================================
+       CSS EXERCISE 1 – INTERNAL STYLE BLOCK (demonstration)
+       Minimal internal block to demonstrate internal CSS concept.
+       All design rules are in styles.css (external) — industry best practice.
+       ===================================================================== -->
+  <style>
+    /* Internal Style Block — CSS Exercise 1 demo */
+    /* NOTE: All layout/design rules are in styles.css (external). */
+
+    /* Internal rule: styles the CSS Exercise 1 demo note paragraph */
+    #ex1-internal-demo {
+      font-style: italic;
+      color: var(--blue-700, #1a3a6b);
+      font-size: .92rem;
+      padding: .5rem 1rem;
+      background: var(--blue-50, #eff6ff);
+      border-left: 3px solid var(--blue-500, #2563eb);
+      border-radius: 0 6px 6px 0;
+      margin-top: 1rem;
+      display: block;
+    }
+  </style>
+
+  <!-- =====================================================================
+       JS EXERCISE 14 — jQuery CDN
+       ===================================================================== -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+          crossorigin="anonymous"></script>
+
+  <!-- JS PHASE 3 — External JavaScript (main.js) -->
+  <script src="main.js" defer></script>
+
+  <!-- JS Exercise UI Styles (toast, dashboard, async cards) -->
+  <style>
+    /* ── Toast notification system ── */
+    #js-toast-container{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;gap:.6rem;max-width:340px;}
+    .js-toast{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;padding:.85rem 1.1rem;border-radius:10px;font-size:.88rem;font-weight:500;box-shadow:0 8px 24px rgba(10,22,40,.18);transition:opacity .3s ease,transform .3s ease;animation:toastIn .3s ease;}
+    .js-toast--success{background:#dcfce7;color:#15803d;border-left:4px solid #22c55e;}
+    .js-toast--error  {background:#fee2e2;color:#b91c1c;border-left:4px solid #ef4444;}
+    .js-toast--info   {background:var(--blue-50,#eff6ff);color:var(--blue-700,#1a3a6b);border-left:4px solid var(--blue-500,#2563eb);}
+    .js-toast-close{background:none;border:none;cursor:pointer;font-size:1.1rem;line-height:1;padding:0;opacity:.55;flex-shrink:0;}
+    .js-toast-close:hover{opacity:1;}
+    @keyframes toastIn{from{opacity:0;transform:translateX(60px);}to{opacity:1;transform:none;}}
+
+    /* ── Dashboard stats ── */
+    #js-dashboard{padding:60px 0;background:linear-gradient(135deg,var(--blue-900,#0a1628) 0%,var(--blue-700,#1a3a6b) 100%);}
+    .js-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem;}
+    .js-stat-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.75rem 1.5rem;text-align:center;}
+    .js-stat-num{font-family:var(--font-display,'Playfair Display',serif);font-size:2.2rem;font-weight:700;color:#fff;}
+    .js-stat-label{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:.3rem;text-transform:uppercase;letter-spacing:.08em;}
+    @media(max-width:640px){.js-stats-grid{grid-template-columns:1fr 1fr;}}
+
+    /* ── JS Events section ── */
+    #js-events-section{padding:80px 0;background:var(--gray-50,#f8fafc);}
+    .js-controls{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1.75rem;}
+    #js-search-input{flex:1;min-width:220px;padding:.65em 1em;border:1.5px solid var(--gray-200,#e2e8f0);border-radius:6px;font-size:.95rem;font-family:inherit;}
+    #js-search-input:focus{outline:none;border-color:var(--blue-500,#2563eb);box-shadow:0 0 0 3px rgba(37,99,235,.12);}
+    #js-category-filter{padding:.65em 1em;border:1.5px solid var(--gray-200,#e2e8f0);border-radius:6px;font-size:.9rem;font-family:inherit;}
+
+    /* ── Async section ── */
+    #js-async-section{padding:80px 0;background:var(--white,#fff);}
+    #js-async-spinner{display:none;justify-content:center;align-items:center;gap:.75rem;padding:2rem;color:var(--gray-400,#94a3b8);}
+    .js-spinner-ring{width:32px;height:32px;border:3px solid var(--blue-100,#dbeafe);border-top-color:var(--blue-500,#2563eb);border-radius:50%;animation:spin .7s linear infinite;}
+    #js-async-output{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1.5rem;}
+    .js-user-card{background:var(--gray-50,#f8fafc);border:1px solid var(--gray-200,#e2e8f0);border-radius:10px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.25rem;font-size:.87rem;}
+    .js-user-card strong{color:var(--blue-900,#0a1628);font-size:.95rem;}
+    .js-user-card span{color:var(--gray-600,#475569);}
+
+    /* ── Add Event form section ── */
+    #js-add-event-section{padding:80px 0;background:var(--blue-50,#eff6ff);}
+    .js-add-form{background:var(--white,#fff);border-radius:16px;padding:2rem;box-shadow:0 4px 16px rgba(10,22,40,.1);max-width:720px;}
+    .js-add-form .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    @media(max-width:600px){.js-add-form .form-row{grid-template-columns:1fr;}}
+
+    /* ── jQuery demo section ── */
+    #js-jquery-section{padding:80px 0;background:var(--white,#fff);}
+    .js-jquery-demo{background:var(--gray-50,#f8fafc);border:1.5px solid var(--gray-200,#e2e8f0);border-radius:12px;padding:1.75rem;max-width:480px;}
+    .js-jquery-msg{display:none;margin-top:.75rem;font-size:.9rem;font-weight:600;}
+    .js-why-modern{background:linear-gradient(135deg,var(--blue-900,#0a1628),var(--blue-700,#1a3a6b));border-radius:16px;padding:2.5rem;color:#fff;margin-top:2.5rem;}
+    .js-why-modern h3{font-family:var(--font-display,'Playfair Display',serif);font-size:1.5rem;margin-bottom:1rem;}
+    .js-framework-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:1.25rem;}
+    .js-framework-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:1.25rem;}
+    .js-framework-card h4{color:var(--blue-300,#93c5fd);font-size:1rem;margin-bottom:.5rem;}
+    .js-framework-card p{color:rgba(255,255,255,.7);font-size:.88rem;line-height:1.6;}
+    @media(max-width:600px){.js-framework-grid{grid-template-columns:1fr;}}
+
+    /* ── Ex2 output box ── */
+    #js-ex2-output{background:rgba(0,0,0,.3);border-radius:8px;padding:1rem 1.25rem;font-family:monospace;font-size:.85rem;color:#93c5fd;line-height:2;margin-top:1.25rem;}
+
+    /* ── Form success msg ── */
+    #js-form-success{display:none;background:#dcfce7;color:#15803d;border:1px solid #86efac;border-radius:8px;padding:.75rem 1rem;margin-top:1rem;font-size:.9rem;}
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================ -->
+<!-- EXERCISE 1 – HTML5 BASE TEMPLATE                            -->
+<!-- Semantic HTML5, DOCTYPE, lang, charset, proper structure    -->
+<!-- ============================================================ -->
+
+<!-- Navigation -->
+<header>
+  <nav id="navbar" role="navigation" aria-label="Main Navigation">
+    <div class="container nav-inner">
+
+      <!-- Brand -->
+      <a href="#home" class="nav-logo">Community<span>Hub</span></a>
+
+      <!-- Nav links — CSS Exercise 6: list styling, :link :visited :hover :active -->
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#section-ex5">Register</a></li>
+        <li><a href="#section-ex6">Feedback</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://www.eventbrite.com/help/" target="_blank" rel="noopener">Help ↗</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#section-ex5" class="btn btn-primary" style="padding:.55em 1.2em;font-size:.88rem;">Register Now</a>
+      </div>
+
+      <!-- Hamburger menu for mobile — CSS Exercise 10 responsive -->
+      <button class="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+
+  <!-- Hero / Home Section — CSS Exercise 4: background-image fallback + gradient -->
+  <section id="home" aria-label="Hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">&#128205; Hyderabad Community Network</div>
+
+        <!--
+          CSS EXERCISE 1 — INLINE STYLE DEMONSTRATION
+          The id="mainHeader" heading uses inline style="color:#ffffff" to demonstrate inline CSS.
+          Inline styles have the highest specificity but are not recommended for production use.
+          In production, all colors should come from styles.css.
+        -->
+        <h1 id="mainHeader" class="hero-title" style="color:#ffffff;">
+          Connect. Celebrate.<br/><em>Experience Local</em>
+        </h1>
+        <p class="hero-sub">
+          Discover hundreds of community events happening near you — from cultural festivals and tech meetups to food fairs and charity drives.
+        </p>
+        <div class="hero-actions">
+          <a href="#events" class="btn btn-primary">Explore Events</a>
+          <a href="#section-ex5" class="btn btn-ghost">Register Free</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="stat-val">240+</div><div class="stat-lbl">Events This Month</div></div>
+          <div><div class="stat-val">18K</div><div class="stat-lbl">Community Members</div></div>
+          <div><div class="stat-val">50+</div><div class="stat-lbl">Local Organizers</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 3 – WELCOME MESSAGE WITH STYLING AND ID/CLASS      -->
+  <!-- div#welcomeBanner, .highlight, inline styles, blue bg        -->
+  <!-- ============================================================ -->
+  <section id="section-ex3" aria-label="Welcome Banner">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 03">Exercise 3 – Welcome Message with Styling and ID/Class</div>
+
+      <!-- ID selector #welcomeBanner styled via styles.css — CSS Exercises 3, 4, 8 -->
+      <div id="welcomeBanner">
+        <h2 class="welcome-title">&#127881; Welcome to CommunityHub!</h2>
+        <p class="welcome-sub">
+          Your go-to portal for discovering, joining, and organising
+          <span class="highlight">local community events</span> across the city.
+        </p>
+
+        <!-- Inline style demo — CSS Exercise 1 -->
+        <p style="display:inline-block; background:#f59e0b; color:#0a1628; font-weight:700; font-size:.9rem; padding:.4em 1.1em; border-radius:999px; letter-spacing:.05em;">
+          &#127873; SPECIAL OFFER — First-time registration is FREE this month!
+        </p>
+
+        <div style="margin-top:1.75rem; display:flex; gap:1rem; flex-wrap:wrap;">
+          <a href="#events" class="btn btn-ghost">Browse Events</a>
+          <a href="#section-ex5" class="btn" style="background:#f59e0b;color:#0a1628;font-weight:700;">Claim Free Spot</a>
+        </div>
+
+        <!-- CSS Exercise 1 – internal style demo note -->
+        <span id="ex1-internal-demo">
+          &#128161; CSS Exercise 1: This element is styled by an <strong>internal</strong> &lt;style&gt; block.
+          The &lt;h1&gt; above uses an <strong>inline</strong> style (color:#ffffff).
+          All other elements are styled by <strong>styles.css</strong> (external). External &gt; Internal &gt; Inline for maintainability.
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 4 – IMAGE GALLERY FOR COMMUNITY EVENTS             -->
+  <!-- Table layout 2x3, alt/title, captions, .img-border class    -->
+  <!-- CSS EXERCISE 7 – TABLE STYLING                               -->
+  <!-- border-collapse, padding, borders, zebra striping,           -->
+  <!-- centered text, professional appearance                       -->
+  <!-- ============================================================ -->
+  <section id="section-ex4" aria-label="Image Gallery">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 04">Exercise 4 – Image Gallery for Community Events</div>
+      <div class="section-label">Gallery</div>
+      <h2 class="section-title">Moments from Past Events</h2>
+      <p class="section-sub">Relive the energy of our community gatherings through these highlights.</p>
+
+      <!-- CSS Exercise 7: gallery-table uses border-collapse:separate, padding, borders, zebra striping, centered text -->
+      <table class="gallery-table" role="presentation" aria-label="Event photo gallery">
+        <!-- Row 1 (odd row) -->
+        <tr>
+          <td>
+            <div class="gallery-cell">
+              <img class="img-border"
+                   src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&q=80"
+                   alt="Music Festival crowd enjoying outdoor concert"
+                   title="Summer Music Festival 2024" />
+              <p class="gallery-caption">Summer Music Festival<small>July 2024 &middot; Hussain Sagar</small></p>
+            </div>
+          </td>
+          <td>
+            <div class="gallery-cell">
+              <img class="img-border"
+                   src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=600&q=80"
+                   alt="Tech conference attendees networking at event"
+                   title="HyderaTech Meetup 2024" />
+              <p class="gallery-caption">HyderaTech Meetup<small>August 2024 &middot; HICC</small></p>
+            </div>
+          </td>
+          <td>
+            <div class="gallery-cell">
+              <img class="img-border"
+                   src="https://images.unsplash.com/photo-1555244162-803834f70033?w=600&q=80"
+                   alt="Food fair stalls with colorful local cuisine displays"
+                   title="Street Food Carnival 2024" />
+              <p class="gallery-caption">Street Food Carnival<small>September 2024 &middot; Banjara Hills</small></p>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 2 (even row — zebra stripe .gallery-table tr:nth-child(even)) -->
+        <tr>
+          <td>
+            <div class="gallery-cell">
+              <img class="img-border"
+                   src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80"
+                   alt="Community volunteers planting trees in local park"
+                   title="Green Hyderabad Drive 2024" />
+              <p class="gallery-caption">Green City Drive<small>October 2024 &middot; KBR Park</small></p>
+            </div>
+          </td>
+          <td>
+            <div class="gallery-cell">
+              <img class="img-border"
+                   src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&q=80"
+                   alt="Children participating in art workshop indoors"
+                   title="Kids Art &amp; Craft Fair 2024" />
+              <p class="gallery-caption">Kids Art &amp; Craft Fair<small>November 2024 &middot; Necklace Road</small></p>
+            </div>
+          </td>
+          <td>
+            <div class="gallery-cell">
+              <img class="img-border"
+                   src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&q=80"
+                   alt="Outdoor yoga session participants at sunrise"
+                   title="Sunrise Wellness Retreat 2024" />
+              <p class="gallery-caption">Sunrise Wellness Retreat<small>December 2024 &middot; Golconda</small></p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- JS EXERCISE 7 + 8 — Dynamic Events Section                  -->
+  <!-- DOM Manipulation, Event Handling, Search, Filter            -->
+  <!-- ============================================================ -->
+  <section id="js-events-section" aria-label="Dynamic Events">
+    <div class="container">
+      <div class="ex-heading" data-num="JS Ex 2-8">JS Exercises 2–8 · Dynamic Events: DOM, Arrays, Events, Search</div>
+      <div class="section-label">Live</div>
+      <h2 class="section-title">Events Near You</h2>
+      <p class="section-sub">Rendered dynamically via JavaScript — search, filter, and register in real time.</p>
+
+      <!-- Exercise 2: Data Types output box -->
+      <div id="js-ex2-output" style="display:none;"></div>
+
+      <!-- Exercise 3/8: filter + search controls -->
+      <div class="js-controls" style="margin-top:1.5rem;">
+        <!-- keydown live search — Exercise 8 -->
+        <input type="text" id="js-search-input" placeholder="&#128269; Search events by name, category, location…" aria-label="Search events" />
+
+        <!-- onchange category filter — Exercise 8 -->
+        <select id="js-category-filter" aria-label="Filter by category">
+          <option value="All">All Categories</option>
+          <option value="Music">&#127925; Music</option>
+          <option value="Tech">&#128187; Tech</option>
+          <option value="Culture">&#127912; Culture</option>
+          <option value="Food">&#127859; Food</option>
+          <option value="Wellness">&#129392; Wellness</option>
+        </select>
+
+        <!-- Filter buttons (Exercise 4 filterEventsByCategory) -->
+        <button class="btn btn-primary js-filter-btn"  data-category="All"     >All</button>
+        <button class="btn btn-outline js-filter-btn"  data-category="Music"   >Music</button>
+        <button class="btn btn-outline js-filter-btn"  data-category="Tech"    >Tech</button>
+        <button class="btn btn-outline js-filter-btn"  data-category="Culture" >Culture</button>
+        <button class="btn btn-outline js-filter-btn"  data-category="Food"    >Food</button>
+        <button class="btn btn-outline js-filter-btn"  data-category="Wellness">Wellness</button>
+      </div>
+
+      <!-- Exercise 3: hide toggles -->
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+        <button id="js-toggle-full"    class="btn btn-outline" style="font-size:.85rem;">Hide Sold Out</button>
+        <button id="js-toggle-expired" class="btn btn-outline" style="font-size:.85rem;">Hide Past Events</button>
+      </div>
+
+      <!-- Exercise 7: cards injected here by renderEventCards() -->
+      <div class="events-grid" id="js-events-grid">
+        <!-- Populated by main.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- JS EXERCISES 3/10 — Static legacy events (id="events")      -->
+  <!-- Kept to preserve HTML Phase 1 section anchor                -->
+  <!-- ============================================================ -->
+  <section id="events" aria-label="Upcoming Events" style="display:none;">
+    <!-- Hidden — superseded by #js-events-section above -->
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 5 – EVENT REGISTRATION FORM                        -->
+  <!-- CSS EXERCISE 8 – BOX MODEL: margin, padding, border,         -->
+  <!-- border-radius, box-shadow, outline on .reg-form, .form-control -->
+  <!-- ============================================================ -->
+  <section id="section-ex5" aria-label="Registration Form">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 05">Exercise 5 – Event Registration Form</div>
+
+      <div class="form-wrap">
+        <!-- Left info panel -->
+        <div class="form-info">
+          <div class="section-label">Register</div>
+          <h3>Join an Event Today</h3>
+          <p>Fill in the form to secure your spot at any of our upcoming community events. Confirmation is instant!</p>
+
+          <div class="form-feature">
+            <div class="form-icon">&#9989;</div>
+            <div class="form-feature-text">
+              <strong>Instant Confirmation</strong>
+              <span>Receive your ticket via email within seconds.</span>
+            </div>
+          </div>
+          <div class="form-feature">
+            <div class="form-icon">&#128274;</div>
+            <div class="form-feature-text">
+              <strong>Secure &amp; Private</strong>
+              <span>Your data is never shared with third parties.</span>
+            </div>
+          </div>
+          <div class="form-feature">
+            <div class="form-icon">&#128241;</div>
+            <div class="form-feature-text">
+              <strong>Mobile Tickets</strong>
+              <span>Access your e-ticket on any device anytime.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="reg-form">
+          <h4 style="font-family:var(--font-display);font-size:1.4rem;color:var(--blue-900);margin-bottom:1.5rem;">Event Registration</h4>
+
+          <form id="regForm" novalidate onsubmit="handleSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="reg-name">Full Name <span class="req">*</span></label>
+                <input type="text" id="reg-name" class="form-control"
+                       placeholder="e.g. Priya Sharma"
+                       required autofocus />
+              </div>
+              <div class="form-group">
+                <label for="reg-email">Email Address <span class="req">*</span></label>
+                <input type="email" id="reg-email" class="form-control"
+                       placeholder="you@example.com"
+                       required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="reg-phone" class="form-control"
+                     placeholder="+91 98765 43210"
+                     required
+                     onblur="validatePhone(this)" />
+              <div class="form-output" id="phone-output"></div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="reg-date">Preferred Date <span class="req">*</span></label>
+                <input type="date" id="reg-date" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label for="reg-event">Event Type <span class="req">*</span></label>
+                <select id="reg-event" class="form-control" required
+                        onchange="showEventFee(this)">
+                  <option value="">— Select Event —</option>
+                  <option value="music">&#127925; Music Festival (&#8377;499)</option>
+                  <option value="tech">&#128187; Tech Meetup (Free)</option>
+                  <option value="culture">&#127912; Cultural Fest (&#8377;199)</option>
+                  <option value="food">&#127859; Food Carnival (&#8377;299)</option>
+                  <option value="wellness">&#129392; Wellness Retreat (&#8377;149)</option>
+                </select>
+              </div>
+            </div>
+
+            <output id="fee-output" class="form-output" style="display:block;margin-top:-.5rem;margin-bottom:1rem;"></output>
+
+            <div class="form-group">
+              <label for="reg-message">Additional Message</label>
+              <textarea id="reg-message" class="form-control"
+                        rows="3"
+                        placeholder="Any special requirements or questions?"
+                        maxlength="300"
+                        onkeyup="updateCounter(this,'msg-counter',300)"></textarea>
+              <div class="char-counter" id="msg-counter">0 / 300 characters</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:.85em;">
+              &#9993; Submit Registration
+            </button>
+            <!-- JS Exercise 11/12: success message -->
+            <div id="js-form-success"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 6 – EVENT FEEDBACK WITH EVENT HANDLING             -->
+  <!-- onblur, onchange, onclick, ondblclick, onkeyup              -->
+  <!-- ============================================================ -->
+  <section id="section-ex6" aria-label="Feedback and Event Handling">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 06">Exercise 6 – Event Feedback with Event Handling</div>
+      <div class="section-label">Interactions</div>
+      <h2 class="section-title">Live Event Handlers</h2>
+      <p class="section-sub">Demonstrating JavaScript event handling through interactive UI components.</p>
+
+      <div class="feedback-grid">
+
+        <div class="feedback-card">
+          <h4>&#128222; onblur – Phone Validation</h4>
+          <p>Validates the phone number format when the field loses focus.</p>
+          <input type="tel" id="ex6-phone" class="form-control"
+                 placeholder="+91 98765 43210"
+                 onblur="ex6ValidatePhone(this)" />
+          <div id="ex6-phone-status"></div>
+        </div>
+
+        <div class="feedback-card">
+          <h4>&#128260; onchange – Fee Display</h4>
+          <p>Dynamically shows the registration fee when a different event type is selected.</p>
+          <select id="ex6-select" class="form-control"
+                  onchange="ex6ShowFee(this)">
+            <option value="">— Choose event —</option>
+            <option value="music|499">&#127925; Music Festival</option>
+            <option value="tech|0">&#128187; Tech Meetup</option>
+            <option value="culture|199">&#127912; Cultural Fest</option>
+            <option value="food|299">&#127859; Food Carnival</option>
+          </select>
+          <div id="ex6-fee-display" class="status-badge status-info" style="margin-top:.75rem;display:none;"></div>
+        </div>
+
+        <div class="feedback-card">
+          <h4>&#128432; onclick – Submit Confirmation</h4>
+          <p>Displays a confirmation alert when the button is clicked.</p>
+          <input type="text" id="ex6-name" class="form-control"
+                 placeholder="Enter your name" style="margin-bottom:.75rem;" />
+          <button class="btn btn-primary" style="width:100%;justify-content:center;"
+                  onclick="ex6Confirm()">Confirm Registration</button>
+          <div id="ex6-confirm-status" style="margin-top:.75rem;"></div>
+        </div>
+
+        <div class="feedback-card">
+          <h4>&#128070; ondblclick – Image Enlargement</h4>
+          <p>Double-click the image below to toggle its enlarged size.</p>
+          <img id="ex6-img" class="enlarge-img"
+               src="https://images.unsplash.com/photo-1528495612343-9ca9f4a4de28?w=600&q=80"
+               alt="Community event"
+               title="Double-click to enlarge"
+               ondblclick="toggleEnlarge(this)" />
+          <p style="font-size:.78rem;color:var(--gray-400);margin-top:.5rem;">Double-click to enlarge &#8597;</p>
+        </div>
+
+        <div class="feedback-card" style="grid-column:1/-1;">
+          <h4>&#9000; onkeyup – Character Counter</h4>
+          <p>Counts characters in real time as you type your event feedback.</p>
+          <textarea id="ex6-feedback" class="form-control" rows="3"
+                    placeholder="Share your thoughts about the event..."
+                    maxlength="200"
+                    onkeyup="updateCounter(this,'ex6-counter',200)"></textarea>
+          <div class="char-counter" id="ex6-counter">0 / 200 characters</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 7 – VIDEO INVITE WITH MEDIA EVENTS                 -->
+  <!-- CSS EXERCISE 8: border, border-radius, box-shadow on .video-wrap -->
+  <!-- ============================================================ -->
+  <section id="section-ex7" aria-label="Video Invite">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 07">Exercise 7 – Video Invite with Media Events</div>
+      <div class="section-label" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15);color:var(--blue-100);">Media</div>
+      <h2 class="section-title">Watch Our Community Invite</h2>
+      <p class="section-sub">An inspiring video message from our event coordinators.</p>
+
+      <div class="video-wrap">
+        <video id="communityVideo"
+               controls
+               width="100%"
+               poster="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=800&q=80"
+               oncanplay="videoReady()"
+               onplay="videoPlay()"
+               onpause="videoPause()"
+               onended="videoEnd()">
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+          <p style="padding:2rem;color:rgba(255,255,255,.6);text-align:center;">
+            Your browser doesn't support HTML5 video.
+            <a href="https://www.w3schools.com/html/mov_bbb.mp4" style="color:var(--blue-300);">Download the video</a>.
+          </p>
+        </video>
+        <div class="video-status" id="video-status">
+          &#9203; Loading video, please wait…
+        </div>
+      </div>
+
+      <p style="color:rgba(255,255,255,.45);font-size:.82rem;text-align:center;margin-top:1.5rem;">
+        &#128161; An <code style="color:var(--blue-300);">onbeforeunload</code> warning is active — try closing the tab to see it.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 8 – SAVING USER PREFERENCES                        -->
+  <!-- localStorage, sessionStorage, save/load/clear               -->
+  <!-- ============================================================ -->
+  <section id="section-ex8" aria-label="User Preferences">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 08">Exercise 8 – Saving User Preferences</div>
+      <div class="section-label">Storage</div>
+      <h2 class="section-title">Your Saved Preferences</h2>
+      <p class="section-sub">Demonstrating <code>localStorage</code> and <code>sessionStorage</code> to persist and retrieve user settings.</p>
+
+      <div class="pref-grid">
+
+        <div class="pref-box">
+          <h4>&#128190; localStorage<br/><small style="font-weight:400;font-size:.78rem;color:var(--gray-400);">Persists across browser sessions</small></h4>
+          <label style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Preferred Event Category</label>
+          <select id="ls-event" class="form-control" style="margin-bottom:.75rem;">
+            <option value="">— Select —</option>
+            <option value="Music">&#127925; Music</option>
+            <option value="Tech">&#128187; Tech</option>
+            <option value="Culture">&#127912; Culture</option>
+            <option value="Food">&#127859; Food</option>
+            <option value="Wellness">&#129392; Wellness</option>
+          </select>
+          <label style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Your Name</label>
+          <input type="text" id="ls-username" class="form-control" placeholder="Your display name" style="margin-bottom:.75rem;" />
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+            <button class="btn btn-primary" style="font-size:.85rem;padding:.6em 1.2em;" onclick="saveLocalStorage()">Save to localStorage</button>
+            <button class="btn btn-outline" style="font-size:.85rem;padding:.6em 1.2em;" onclick="loadLocalStorage()">Load</button>
+          </div>
+          <div class="pref-display" id="ls-display">No saved preference yet.</div>
+        </div>
+
+        <div class="pref-box" style="border-top-color:var(--accent);">
+          <h4>&#9889; sessionStorage<br/><small style="font-weight:400;font-size:.78rem;color:var(--gray-400);">Cleared when the browser tab closes</small></h4>
+          <label style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Session Event Interest</label>
+          <select id="ss-event" class="form-control" style="margin-bottom:.75rem;">
+            <option value="">— Select —</option>
+            <option value="Morning">&#127749; Morning Events</option>
+            <option value="Evening">&#127746; Evening Events</option>
+            <option value="Weekend">&#128197; Weekend Only</option>
+            <option value="All">&#10024; All Events</option>
+          </select>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+            <button class="btn btn-primary" style="font-size:.85rem;padding:.6em 1.2em;background:var(--accent);color:var(--blue-900);" onclick="saveSessionStorage()">Save to sessionStorage</button>
+            <button class="btn btn-outline" style="font-size:.85rem;padding:.6em 1.2em;" onclick="loadSessionStorage()">Load</button>
+          </div>
+          <div class="pref-display" id="ss-display">No session preference yet.</div>
+
+          <button class="btn" style="margin-top:1.5rem;width:100%;justify-content:center;background:#fee2e2;color:#b91c1c;font-size:.85rem;" onclick="clearAllStorage()">
+            &#128465; Clear Both Storages
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 9 – GEOLOCATION FOR EVENT MAPPING                  -->
+  <!-- navigator.geolocation, error handling, high accuracy        -->
+  <!-- CSS EXERCISE 8: border, border-radius, padding, box-shadow  -->
+  <!-- ============================================================ -->
+  <section id="section-ex9" aria-label="Geolocation">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 09">Exercise 9 – Geolocation for Event Mapping</div>
+      <div class="section-label">Geolocation</div>
+      <h2 class="section-title">Find Events Near You</h2>
+      <p class="section-sub">We'll use your location to surface the most relevant community events in your area.</p>
+
+      <div class="geo-box">
+        <div class="geo-icon">&#128205;</div>
+        <h3 style="font-family:var(--font-display);font-size:1.5rem;color:var(--blue-900);margin-bottom:.5rem;">Location Access</h3>
+        <p style="color:var(--gray-600);font-size:.92rem;margin-bottom:1.5rem;">
+          Click the button below to detect your current location. Your coordinates are only used to find nearby events and are never stored on our servers.
+        </p>
+
+        <button class="btn btn-primary" style="padding:.8em 2em;font-size:1rem;" onclick="findNearbyEvents()">
+          &#128205; Find Nearby Events
+        </button>
+
+        <div class="geo-result" id="geo-result"></div>
+
+        <div id="geo-map-link" style="display:none;margin-top:1rem;">
+          <a id="geo-link" href="#" target="_blank" class="btn btn-outline" style="margin:auto;">
+            &#128506; View on Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- EXERCISE 10 – DEBUGGING WITH CHROME DEVTOOLS                -->
+  <!-- Console logs, debugging tips, breakpoint comments           -->
+  <!-- ============================================================ -->
+  <section id="section-ex10" aria-label="Debugging">
+    <div class="container">
+      <div class="ex-heading" data-num="Ex 10">Exercise 10 – Debugging with Chrome DevTools</div>
+      <div class="section-label">Dev Tools</div>
+      <h2 class="section-title">Chrome DevTools Debugging Guide</h2>
+      <p class="section-sub">Open DevTools (F12) to see live console output and explore debugging techniques.</p>
+
+      <div class="debug-grid">
+
+        <div class="debug-card">
+          <h4>&#128203; Console Logging</h4>
+          <div class="code-block"><span class="code-comment">// Different console log levels</span>
+<span class="code-keyword">console</span>.log(<span class="code-string">'&#8505; CommunityHub loaded'</span>);
+<span class="code-keyword">console</span>.info(<span class="code-string">'&#8505; App version: 1.0.0'</span>);
+<span class="code-keyword">console</span>.warn(<span class="code-string">'&#9888; Check network speed'</span>);
+<span class="code-keyword">console</span>.error(<span class="code-string">'&#10006; API timeout error'</span>);
+<span class="code-keyword">console</span>.table(eventsData);</div>
+          <p class="debug-tip">Open Console tab in DevTools (F12 &rarr; Console) to see live output.</p>
+          <div class="debug-btn-row">
+            <button class="btn" style="background:rgba(255,255,255,.1);color:#93c5fd;font-size:.82rem;" onclick="debugLog()">Run console.log</button>
+            <button class="btn" style="background:rgba(255,255,255,.1);color:#fde68a;font-size:.82rem;" onclick="debugWarn()">Run console.warn</button>
+            <button class="btn" style="background:rgba(255,255,255,.1);color:#fca5a5;font-size:.82rem;" onclick="debugError()">Run console.error</button>
+          </div>
+        </div>
+
+        <div class="debug-card">
+          <h4>&#128269; Inspect Element</h4>
+          <div class="code-block"><span class="code-comment">// 1. Right-click any element</span>
+<span class="code-comment">//    &#8594; "Inspect" to open DevTools</span>
+
+<span class="code-comment">// 2. Edit HTML/CSS live:</span>
+<span class="code-keyword">document</span>.getElementById(
+  <span class="code-string">'welcomeBanner'</span>
+).style.background = <span class="code-string">'red'</span>;
+
+<span class="code-comment">// 3. $0 refers to selected element</span>
+<span class="code-keyword">console</span>.log(<span class="code-string">$0</span>);</div>
+          <p class="debug-tip">Right-click &rarr; Inspect on any element to view and live-edit its CSS.</p>
+          <div class="debug-btn-row">
+            <button class="btn" style="background:rgba(255,255,255,.1);color:#93c5fd;font-size:.82rem;" onclick="debugInspect()">Highlight Banner</button>
+          </div>
+        </div>
+
+        <div class="debug-card">
+          <h4>&#128308; Breakpoints</h4>
+          <div class="code-block"><span class="code-comment">// Set a breakpoint programmatically</span>
+<span class="code-keyword">function</span> debuggableFunction() {
+  <span class="code-keyword">debugger</span>; <span class="code-comment">// &#8592; pauses here</span>
+  <span class="code-keyword">const</span> x = 42;
+  <span class="code-keyword">const</span> y = x * 2;
+  <span class="code-keyword">return</span> y;
+}
+<span class="code-comment">// DevTools &#8594; Sources &#8594; add
+// breakpoint by clicking line #</span></div>
+          <p class="debug-tip">In Sources tab, click a line number to add a breakpoint.</p>
+          <div class="debug-btn-row">
+            <button class="btn" style="background:rgba(255,255,255,.1);color:#93c5fd;font-size:.82rem;" onclick="runDebuggable()">Run with Breakpoint</button>
+          </div>
+        </div>
+
+        <div class="debug-card">
+          <h4>&#128225; Network &amp; Performance</h4>
+          <div class="code-block"><span class="code-comment">// Measure execution time</span>
+<span class="code-keyword">console</span>.time(<span class="code-string">'renderTime'</span>);
+
+<span class="code-comment">// ... your code here ...</span>
+
+<span class="code-keyword">console</span>.timeEnd(<span class="code-string">'renderTime'</span>);
+
+<span class="code-comment">// Log a table of objects</span>
+<span class="code-keyword">console</span>.table([
+  { event: <span class="code-string">'Jazz Night'</span>, seats: 120 },
+  { event: <span class="code-string">'Tech Meetup'</span>, seats: 300 }
+]);</div>
+          <p class="debug-tip">Use the Network tab to monitor API calls and Performance tab to profile load speed.</p>
+          <div class="debug-btn-row">
+            <button class="btn" style="background:rgba(255,255,255,.1);color:#93c5fd;font-size:.82rem;" onclick="debugTable()">console.table()</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- CSS EXERCISE 9 – MULTIPLE COLUMNS                           -->
+  <!-- Community News Bulletin                                      -->
+  <!-- column-count:2; column-gap:30px; column-rule:1px solid gray -->
+  <!-- ============================================================ -->
+  <section id="news-bulletin" aria-label="Community News Bulletin">
+    <div class="container">
+      <div class="ex-heading" data-num="CSS Ex 09">CSS Exercise 9 – Multiple Columns: Community News Bulletin</div>
+      <div class="section-label">News</div>
+      <h2 class="section-title">Community News Bulletin</h2>
+      <p class="section-sub">Latest updates from your local community — styled with CSS multi-column layout.</p>
+
+      <!-- .news-columns applies: column-count:2; column-gap:30px; column-rule:1px solid var(--gray-400) -->
+      <div class="news-columns">
+        <div class="news-item">
+          <span class="news-date">Jun 1, 2025</span>
+          <h3>New Community Garden Opens in Jubilee Hills</h3>
+          <p>The Hyderabad City Council has inaugurated a new 5-acre community garden at Jubilee Hills. Residents can register for garden plots online starting June 15.</p>
+        </div>
+        <div class="news-item">
+          <span class="news-date">May 28, 2025</span>
+          <h3>Summer Sports League Registration Now Open</h3>
+          <p>The annual Summer Sports League is accepting registrations for cricket, badminton, and football teams. Deadline is June 10. All skill levels welcome.</p>
+        </div>
+        <div class="news-item">
+          <span class="news-date">May 25, 2025</span>
+          <h3>Free Digital Literacy Workshops — June Series</h3>
+          <p>CommunityHub is partnering with local libraries to offer free digital literacy sessions for senior citizens throughout June. Topics include smartphones, video calls, and online safety.</p>
+        </div>
+        <div class="news-item">
+          <span class="news-date">May 20, 2025</span>
+          <h3>Heritage Walk: Charminar to Golconda Trail</h3>
+          <p>A guided heritage walking tour covering Hyderabad's most iconic landmarks returns this June. Limited spots available — register early to secure your place.</p>
+        </div>
+        <div class="news-item">
+          <span class="news-date">May 15, 2025</span>
+          <h3>Flood Relief Drive — Volunteers Needed</h3>
+          <p>Following recent heavy rains, the community is organising a relief drive for affected families in the outskirts. Volunteers and donations are welcome at the CommunityHub centre.</p>
+        </div>
+        <div class="news-item">
+          <span class="news-date">May 10, 2025</span>
+          <h3>Youth Art Competition — Theme: "My Hyderabad"</h3>
+          <p>Students aged 10–18 are invited to submit paintings, sketches, or digital art on the theme of Hyderabad. Winners will be displayed at the Chowmahalla Palace gallery.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" aria-label="Contact Us">
+    <div class="container">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="section-sub">Have questions about an event? Our team is here to help.</p>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-detail">
+            <div class="contact-icon">&#128231;</div>
+            <div>
+              <h5>Email Us</h5>
+              <p>hello@communityhub.in</p>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">&#128222;</div>
+            <div>
+              <h5>Call Us</h5>
+              <p>+91 40-4567-8901</p>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-icon">&#128205;</div>
+            <div>
+              <h5>Visit Us</h5>
+              <p>12 Banjara Hills, Hyderabad — 500034</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-box">
+          <h4>Send a Message</h4>
+          <div class="form-group">
+            <label for="c-name">Your Name</label>
+            <input type="text" id="c-name" class="form-control" placeholder="Ravi Kumar" />
+          </div>
+          <div class="form-group">
+            <label for="c-email">Email</label>
+            <input type="email" id="c-email" class="form-control" placeholder="ravi@email.com" />
+          </div>
+          <div class="form-group">
+            <label for="c-msg">Message</label>
+            <textarea id="c-msg" class="form-control" rows="4" placeholder="How can we help?"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="sendContactMessage()">Send Message &#128232;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================ -->
+  <!-- JS EXERCISE 1 — Dashboard Statistics (dynamic)              -->
+  <!-- JS EXERCISE 10 — Modern JS features                         -->
+  <!-- ============================================================ -->
+  <section id="js-dashboard" aria-label="Dashboard Statistics">
+    <div class="container">
+      <div class="ex-heading" data-num="JS Ex 1,2,10">JS Exercises 1, 2, 10 · Dashboard: Basics, Data Types, Modern JS</div>
+      <div class="section-label" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15);color:var(--blue-100);">Live Stats</div>
+      <h2 class="section-title" style="color:#fff;">Portal Dashboard</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,.6);">Real-time statistics updated dynamically via JavaScript.</p>
+      <div class="js-stats-grid">
+        <div class="js-stat-card">
+          <div class="js-stat-num" id="js-stat-total-events" data-target="7" data-suffix="">—</div>
+          <div class="js-stat-label">Total Events</div>
+        </div>
+        <div class="js-stat-card">
+          <div class="js-stat-num" id="js-stat-total-regs" data-target="0">—</div>
+          <div class="js-stat-label">Registrations</div>
+        </div>
+        <div class="js-stat-card">
+          <div class="js-stat-num" id="js-stat-avail-seats" data-target="1350">—</div>
+          <div class="js-stat-label">Available Seats</div>
+        </div>
+        <div class="js-stat-card">
+          <div class="js-stat-num" id="js-stat-avail-events" data-target="6">—</div>
+          <div class="js-stat-label">Open Events</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- JS EXERCISE 9 — Async JS, Promises, Async/Await            -->
+  <!-- fetch() from jsonplaceholder, spinner, .then()/.catch()     -->
+  <!-- ============================================================ -->
+  <section id="js-async-section" aria-label="Async Data">
+    <div class="container">
+      <div class="ex-heading" data-num="JS Ex 09">JS Exercise 9 · Async JS: Promises, async/await, Fetch API</div>
+      <div class="section-label">API</div>
+      <h2 class="section-title">Live Data from API</h2>
+      <p class="section-sub">Fetched asynchronously from <code>jsonplaceholder.typicode.com/users</code> using <code>async/await</code> and a loading spinner.</p>
+
+      <!-- Loading spinner — Exercise 9 -->
+      <div id="js-async-spinner">
+        <div class="js-spinner-ring"></div>
+        <span style="color:var(--gray-400);">Loading community members…</span>
+      </div>
+
+      <!-- Output populated by loadEvents() in main.js -->
+      <div id="js-async-output"></div>
+
+      <div style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+        <button class="btn btn-primary" onclick="loadEvents()">&#8635; Reload Data (async/await)</button>
+        <button class="btn btn-outline" onclick="fetchUsersWithThen()">&#8635; Reload (.then() style)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- JS EXERCISE 4 — addEvent() form                             -->
+  <!-- Functions, Scope, Closures, HOF                             -->
+  <!-- ============================================================ -->
+  <section id="js-add-event-section" aria-label="Add Event">
+    <div class="container">
+      <div class="ex-heading" data-num="JS Ex 04">JS Exercise 4 · Functions &amp; Closures: addEvent()</div>
+      <div class="section-label">Admin</div>
+      <h2 class="section-title">Add a New Event</h2>
+      <p class="section-sub">Demonstrates <code>addEvent()</code>, closures, callbacks, and HOFs. New events render instantly in the grid above.</p>
+
+      <form id="js-add-event-form" class="js-add-form" novalidate>
+        <div class="form-row" style="margin-bottom:1rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="ae-name" style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Event Name <span style="color:var(--danger);">*</span></label>
+            <input type="text" id="ae-name" name="ae-name" class="form-control" placeholder="e.g. Monsoon Music Night" required />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="ae-category" style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Category <span style="color:var(--danger);">*</span></label>
+            <select id="ae-category" name="ae-category" class="form-control" required>
+              <option value="">— Select —</option>
+              <option value="Music">&#127925; Music</option>
+              <option value="Tech">&#128187; Tech</option>
+              <option value="Culture">&#127912; Culture</option>
+              <option value="Food">&#127859; Food</option>
+              <option value="Wellness">&#129392; Wellness</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom:1rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="ae-date" style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Event Date <span style="color:var(--danger);">*</span></label>
+            <input type="date" id="ae-date" name="ae-date" class="form-control" required />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="ae-location" style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Location <span style="color:var(--danger);">*</span></label>
+            <input type="text" id="ae-location" name="ae-location" class="form-control" placeholder="e.g. HITEC City" required />
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom:1.25rem;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="ae-seats" style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Available Seats</label>
+            <input type="number" id="ae-seats" name="ae-seats" class="form-control" placeholder="e.g. 200" min="0" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="ae-price" style="font-size:.85rem;font-weight:600;color:var(--gray-800);display:block;margin-bottom:.4rem;">Price (&#8377;) — 0 for Free</label>
+            <input type="number" id="ae-price" name="ae-price" class="form-control" placeholder="e.g. 299" min="0" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="padding:.8em 2em;">&#43; Add Event to Portal</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- JS EXERCISE 14 — jQuery + "Why React or Vue?"               -->
+  <!-- ============================================================ -->
+  <section id="js-jquery-section" aria-label="jQuery and Modern Frameworks">
+    <div class="container">
+      <div class="ex-heading" data-num="JS Ex 14">JS Exercise 14 · jQuery &amp; Modern JS Frameworks</div>
+      <div class="section-label">jQuery</div>
+      <h2 class="section-title">jQuery &amp; Why Use React or Vue?</h2>
+      <p class="section-sub">Demonstrates jQuery event handling, animations, and explains the advantages of modern component-based frameworks.</p>
+
+      <!-- jQuery demos -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem;margin-bottom:2.5rem;">
+        <div class="js-jquery-demo">
+          <h4 style="font-size:1rem;font-weight:700;color:var(--blue-800);margin-bottom:.75rem;">&#128279; jQuery Click Handler</h4>
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem;">Uses <code>$('#js-jquery-register-btn').click(...)</code> to confirm registration.</p>
+          <input type="text" id="js-jquery-name" class="form-control" placeholder="Enter your name" style="margin-bottom:.75rem;" />
+          <button id="js-jquery-register-btn" class="btn btn-primary" style="width:100%;justify-content:center;">Register with jQuery</button>
+          <div class="js-jquery-msg"></div>
+        </div>
+
+        <div style="background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:12px;padding:1.75rem;">
+          <h4 style="font-size:1rem;font-weight:700;color:var(--blue-800);margin-bottom:.75rem;">&#10024; jQuery .fadeOut() / .fadeIn()</h4>
+          <p style="font-size:.85rem;color:var(--gray-600);margin-bottom:1rem;">Triggers <code>.fadeOut()</code> on all event cards then fades them back in with a staggered delay.</p>
+          <button id="js-jquery-fade-btn" class="btn btn-outline" style="width:100%;justify-content:center;">&#127773; Fade Cards Out &amp; In</button>
+        </div>
+      </div>
+
+      <!-- Why React or Vue? — Exercise 14 -->
+      <div class="js-why-modern">
+        <h3>&#9889; Why Use React or Vue?</h3>
+        <p style="color:rgba(255,255,255,.75);font-size:.95rem;margin-bottom:.5rem;">
+          jQuery is great for simple DOM manipulation, but modern applications benefit from component-based frameworks. Here's why:
+        </p>
+        <div class="js-framework-grid">
+          <div class="js-framework-card">
+            <h4>&#128260; Component Reusability</h4>
+            <p>React and Vue let you build self-contained UI components (e.g. an EventCard) that can be reused across pages. Instead of copy-pasting HTML, you write it once and render it with different data — dramatically reducing duplication.</p>
+          </div>
+          <div class="js-framework-card">
+            <h4>&#127775; Better State Management</h4>
+            <p>Both frameworks provide reactive state: when your data changes (e.g. seats decrement), the UI updates automatically without manually querying the DOM. jQuery requires you to manually find and update every affected element.</p>
+          </div>
+          <div class="js-framework-card">
+            <h4>&#128640; Easier Large-Scale Development</h4>
+            <p>React and Vue enforce a structured, predictable data flow (one-way binding in React; two-way in Vue). This makes codebases easier to reason about, test, and maintain as the application grows from dozens to thousands of components.</p>
+          </div>
+          <div class="js-framework-card">
+            <h4>&#128736; Ecosystem &amp; Tooling</h4>
+            <p>Both have rich ecosystems: Vue Router / React Router for navigation, Pinia / Redux for global state, and Vite for blazing-fast builds. The developer tooling (DevTools extensions, hot-reload) dramatically boosts productivity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+
+<!-- Footer — CSS Exercise 6: list styling (no bullets), :link :visited :hover :active -->
+<footer role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Community<span>Hub</span></div>
+        <p class="footer-desc">Connecting Hyderabad's communities through memorable local experiences, one event at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#section-ex5">Register</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Event Types</h5>
+        <ul>
+          <li><a href="#">Music &amp; Arts</a></li>
+          <li><a href="#">Tech Meetups</a></li>
+          <li><a href="#">Food Fairs</a></li>
+          <li><a href="#">Wellness</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Support</h5>
+        <ul>
+          <li><a href="https://www.eventbrite.com/help/" target="_blank" rel="noopener">Help Centre &#8599;</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 CommunityHub. All rights reserved. Built with &#10084; in Hyderabad.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Twitter">&#120143;</a>
+        <a href="#" aria-label="Instagram">&#128247;</a>
+        <a href="#" aria-label="LinkedIn">in</a>
+        <a href="#" aria-label="YouTube">&#9654;</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast container (JS Exercise — Toast Notifications) -->
+<div id="js-toast-container" aria-live="polite"></div>
+
+</body>
+</html>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bootstrap Community Event Portal</title>
+
+  <!-- Exercise 1.1 – Bootstrap CDN Setup -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Exercise 1.2 – Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <style>
+    :root {
+      --brand-blue: #0d6efd;
+      --brand-dark: #0a1628;
+    }
+    body { padding-top: 72px; }
+    .exercise-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0d6efd;
+      background: #e7f1ff;
+      border-left: 4px solid #0d6efd;
+      padding: 6px 14px;
+      margin-bottom: 1.25rem;
+      display: inline-block;
+      border-radius: 0 4px 4px 0;
+    }
+    .hero-section {
+      background: linear-gradient(135deg, #0a1628 0%, #0d6efd 100%);
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+    }
+    .section-divider {
+      border-top: 3px solid #e9ecef;
+      margin: 4rem 0 2.5rem;
+    }
+    .stat-card { border-left: 4px solid #0d6efd; }
+    .pricing-card:hover { transform: translateY(-6px); transition: transform .25s; }
+    .icon-btn-circle {
+      width: 44px; height: 44px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+    }
+    .toggle-active { background-color: #0d6efd !important; color: #fff !important; }
+    footer { padding-bottom: 70px; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     Exercise 10 – Responsive Navbar
+     ============================================================ -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="#">
+      <i class="bi bi-calendar-event-fill text-primary me-2"></i>EventPortal
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Events</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Community</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control form-control-sm me-2" type="search" placeholder="Search events…" />
+        <button class="btn btn-outline-primary btn-sm" type="submit">
+          <i class="bi bi-search"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     Hero Section
+     ============================================================ -->
+<section class="hero-section text-white">
+  <div class="container py-5">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="badge bg-primary mb-3 px-3 py-2 fs-6">Bootstrap 5 Learning Project</span>
+        <h1 class="display-3 fw-bold lh-1 mb-4">Bootstrap<br>Community<br>Event Portal</h1>
+        <p class="lead mb-4 opacity-75">A comprehensive single-file Bootstrap 5 exercise project covering the full framework — grids, utilities, components, JavaScript plugins, and more.</p>
+        <div class="d-flex flex-wrap gap-3">
+          <button class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#registerModal">
+            <i class="bi bi-person-plus me-2"></i>Register Now
+          </button>
+          <button class="btn btn-outline-light btn-lg px-4">
+            <i class="bi bi-play-circle me-2"></i>Explore Events
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block text-center">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="card bg-white bg-opacity-10 border-0 text-white p-4 rounded-4 shadow stat-card">
+              <div class="fs-1 fw-bold text-primary">120+</div>
+              <div class="small opacity-75">Events Listed</div>
+            </div>
+          </div>
+          <div class="col-6 mt-4">
+            <div class="card bg-white bg-opacity-10 border-0 text-white p-4 rounded-4 shadow stat-card">
+              <div class="fs-1 fw-bold text-primary">5K+</div>
+              <div class="small opacity-75">Members</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card bg-white bg-opacity-10 border-0 text-white p-4 rounded-4 shadow stat-card">
+              <div class="fs-1 fw-bold text-primary">30</div>
+              <div class="small opacity-75">Cities</div>
+            </div>
+          </div>
+          <div class="col-6 mt-4">
+            <div class="card bg-white bg-opacity-10 border-0 text-white p-4 rounded-4 shadow stat-card">
+              <div class="fs-1 fw-bold text-primary">19</div>
+              <div class="small opacity-75">Exercises</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<main class="container py-5">
+
+  <!-- ===== Exercise 1 – Bootstrap Setup ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 1 – Bootstrap Setup</span>
+  <h2 class="h4 fw-bold mb-3">Bootstrap is Successfully Loaded</h2>
+  <div class="alert alert-success d-flex align-items-center gap-2" role="alert">
+    <i class="bi bi-check-circle-fill fs-5"></i>
+    <div>Bootstrap 5.3.3 CSS &amp; JS and Bootstrap Icons 1.11.3 are loaded via CDN. The framework is ready.</div>
+  </div>
+  <div class="row g-3 mb-2">
+    <div class="col-md-4">
+      <div class="card border-success h-100">
+        <div class="card-body">
+          <i class="bi bi-filetype-css text-success fs-3"></i>
+          <h6 class="fw-bold mt-2">Bootstrap CSS</h6>
+          <p class="text-muted small mb-0">bootstrap.min.css — all utility classes, components, and grid system.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-primary h-100">
+        <div class="card-body">
+          <i class="bi bi-filetype-js text-primary fs-3"></i>
+          <h6 class="fw-bold mt-2">Bootstrap JS Bundle</h6>
+          <p class="text-muted small mb-0">bootstrap.bundle.min.js — includes Popper.js for dropdowns, tooltips &amp; modals.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-warning h-100">
+        <div class="card-body">
+          <i class="bi bi-emoji-smile text-warning fs-3"></i>
+          <h6 class="fw-bold mt-2">Bootstrap Icons</h6>
+          <p class="text-muted small mb-0">1800+ open-source SVG icons via CDN font stylesheet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 2 – Bootstrap Structure ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 2 – Bootstrap Structure &amp; Files</span>
+  <h2 class="h4 fw-bold mb-3">Project Folder Structure</h2>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-primary text-white fw-semibold">
+          <i class="bi bi-folder2-open me-2"></i>css/
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0 small">
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap.css</li>
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap.min.css</li>
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap.rtl.css</li>
+            <li class="text-muted mt-2">Compiled and minified CSS stylesheets for the full framework.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-success text-white fw-semibold">
+          <i class="bi bi-folder2-open me-2"></i>js/
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0 small">
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap.js</li>
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap.min.js</li>
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap.bundle.min.js</li>
+            <li class="text-muted mt-2">JavaScript plugins including Popper.js bundled for interactive components.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-warning text-dark fw-semibold">
+          <i class="bi bi-folder2-open me-2"></i>icons/
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mb-0 small">
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap-icons.css</li>
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap-icons.woff</li>
+            <li><i class="bi bi-file-earmark-code text-muted me-1"></i>bootstrap-icons.woff2</li>
+            <li class="text-muted mt-2">Icon font files for 1800+ SVG-based Bootstrap Icons.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 3 – Responsive Grid Layout ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 3 – Responsive Grid Layout</span>
+  <h2 class="h4 fw-bold mb-3">Responsive 3-Column Grid</h2>
+  <p class="text-muted mb-3">Stacks on mobile, 2 cols on tablet, 3 cols on desktop using <code>col-12 col-md-6 col-lg-4</code>.</p>
+  <div class="container-fluid px-0">
+    <div class="row g-3">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card bg-primary text-white h-100 p-3">
+          <h6 class="fw-bold"><i class="bi bi-calendar-check me-2"></i>Tech Summit 2025</h6>
+          <p class="small mb-0 opacity-75">Column 1 — stacks on mobile, pairs on tablet, thirds on desktop.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card bg-success text-white h-100 p-3">
+          <h6 class="fw-bold"><i class="bi bi-music-note-beamed me-2"></i>Music Festival</h6>
+          <p class="small mb-0 opacity-75">Column 2 — responsive breakpoints: col-12 col-md-6 col-lg-4.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card bg-warning text-dark h-100 p-3">
+          <h6 class="fw-bold"><i class="bi bi-palette me-2"></i>Art Exhibition</h6>
+          <p class="small mb-0 opacity-75">Column 3 — uses container, row, and col Bootstrap classes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 4 – Column Layouts ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 4 – Column Layouts</span>
+  <h2 class="h4 fw-bold mb-4">Sidebar + Main Content &amp; Equal Columns</h2>
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card bg-light h-100 p-3 border-primary">
+        <h6 class="fw-bold text-primary"><i class="bi bi-layout-sidebar me-1"></i>Sidebar (col-md-3)</h6>
+        <ul class="list-unstyled small mt-2 mb-0">
+          <li class="py-1 border-bottom"><a href="#" class="text-decoration-none">All Events</a></li>
+          <li class="py-1 border-bottom"><a href="#" class="text-decoration-none">Tech</a></li>
+          <li class="py-1 border-bottom"><a href="#" class="text-decoration-none">Music</a></li>
+          <li class="py-1 border-bottom"><a href="#" class="text-decoration-none">Sports</a></li>
+          <li class="py-1"><a href="#" class="text-decoration-none">Art</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="card h-100 p-3 border-0 shadow-sm">
+        <h6 class="fw-bold"><i class="bi bi-grid me-1"></i>Main Content (col-md-9)</h6>
+        <p class="text-muted small">This wide column holds the main page content. Pair <code>col-md-3</code> sidebar with <code>col-md-9</code> main for a classic layout.</p>
+        <div class="row g-2 mt-1">
+          <div class="col-6"><div class="bg-primary bg-opacity-10 rounded p-2 text-center small text-primary fw-semibold">Upcoming: 14</div></div>
+          <div class="col-6"><div class="bg-success bg-opacity-10 rounded p-2 text-center small text-success fw-semibold">Registered: 3</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="text-muted small mb-2">4 Equal Columns using <code>col-md-3</code>:</p>
+  <div class="row g-2">
+    <div class="col-6 col-md-3"><div class="border rounded p-3 text-center small fw-semibold bg-light">Quarter 1</div></div>
+    <div class="col-6 col-md-3"><div class="border rounded p-3 text-center small fw-semibold bg-light">Quarter 2</div></div>
+    <div class="col-6 col-md-3"><div class="border rounded p-3 text-center small fw-semibold bg-light">Quarter 3</div></div>
+    <div class="col-6 col-md-3"><div class="border rounded p-3 text-center small fw-semibold bg-light">Quarter 4</div></div>
+  </div>
+
+  <!-- ===== Exercise 5 – Alignment & Reordering ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 5 – Alignment &amp; Reordering</span>
+  <h2 class="h4 fw-bold mb-3">Flexbox Alignment &amp; Column Order</h2>
+  <div class="row justify-content-center align-items-center bg-light rounded-3 p-4 g-3 mb-4">
+    <div class="col-auto">
+      <span class="badge bg-primary px-3 py-2">justify-content-center</span>
+    </div>
+    <div class="col-auto">
+      <span class="badge bg-success px-3 py-2">align-items-center</span>
+    </div>
+    <div class="col-auto">
+      <span class="badge bg-warning text-dark px-3 py-2">These items are centered!</span>
+    </div>
+  </div>
+  <p class="text-muted small mb-2">Column reordering with <code>order-md-1</code> / <code>order-md-2</code>:</p>
+  <div class="row g-3">
+    <div class="col-md-6 order-md-2">
+      <div class="card border-danger p-3 h-100">
+        <div class="fw-bold text-danger"><i class="bi bi-2-circle me-1"></i>Visually Second (order-md-2)</div>
+        <p class="small text-muted mb-0">This div appears second on desktop despite coming first in HTML.</p>
+      </div>
+    </div>
+    <div class="col-md-6 order-md-1">
+      <div class="card border-primary p-3 h-100">
+        <div class="fw-bold text-primary"><i class="bi bi-1-circle me-1"></i>Visually First (order-md-1)</div>
+        <p class="small text-muted mb-0">This div appears first on desktop despite coming second in HTML.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 6 – Flexbox Utilities ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 6 – Flexbox Utilities</span>
+  <h2 class="h4 fw-bold mb-3">d-flex, flex-column, flex-md-row, justify-content-between</h2>
+  <div class="d-flex flex-column flex-md-row gap-3 mb-4 p-3 bg-light rounded-3">
+    <div class="p-3 bg-primary text-white rounded text-center flex-fill">Nav Item 1</div>
+    <div class="p-3 bg-primary text-white rounded text-center flex-fill">Nav Item 2</div>
+    <div class="p-3 bg-primary text-white rounded text-center flex-fill">Nav Item 3</div>
+    <div class="p-3 bg-primary text-white rounded text-center flex-fill">Nav Item 4</div>
+  </div>
+  <p class="small text-muted mb-2">Card using <code>d-flex justify-content-between align-items-center</code>:</p>
+  <div class="card shadow-sm p-4 mb-2">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h6 class="fw-bold mb-1">Bootstrap Summit 2025</h6>
+        <span class="text-muted small"><i class="bi bi-geo-alt me-1"></i>Hyderabad Convention Centre</span>
+      </div>
+      <button class="btn btn-primary btn-sm">Register</button>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 7 – Typography ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 7 – Typography</span>
+  <h2 class="h4 fw-bold mb-3">Bootstrap Typography Utilities</h2>
+  <div class="p-4 bg-light rounded-3">
+    <p class="display-1 lh-1 mb-2" style="font-size:clamp(2rem,6vw,4rem)">display-1</p>
+    <p class="lead text-muted">This is a <strong>.lead</strong> paragraph — slightly larger and lighter body text for introductions.</p>
+    <p class="text-muted">This text uses <code>.text-muted</code> for de-emphasized content.</p>
+    <p class="fw-bold">This sentence uses <code>.fw-bold</code> for bold font weight.</p>
+    <p class="text-uppercase fw-semibold tracking-wide">text-uppercase: this text is all uppercase</p>
+    <p class="text-lowercase">TEXT-LOWERCASE: THIS TEXT IS ALL LOWERCASE</p>
+    <p class="text-capitalize">text-capitalize: each word starts with a capital letter</p>
+    <div class="d-flex flex-wrap gap-2 mt-2">
+      <span class="badge bg-primary">fs-1 (large)</span>
+      <span class="badge bg-secondary">fs-3 (medium)</span>
+      <span class="badge bg-success">fs-6 (small)</span>
+      <span class="fw-light fst-italic text-muted">fw-light + fst-italic</span>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 8 – Forms ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 8 – Forms</span>
+  <h2 class="h4 fw-bold mb-4">Registration &amp; Login Forms</h2>
+  <div class="row g-4">
+    <!-- Registration Form -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-primary text-white fw-semibold">
+          <i class="bi bi-person-plus me-2"></i>Registration Form
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Full Name</label>
+            <input type="text" class="form-control" placeholder="Enter your full name" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Email Address</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+              <input type="email" class="form-control" placeholder="you@example.com" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Phone</label>
+            <div class="input-group">
+              <span class="input-group-text">+91</span>
+              <input type="tel" class="form-control" placeholder="9876543210" />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Event Category</label>
+            <select class="form-control">
+              <option>Technology</option>
+              <option>Music</option>
+              <option>Sports</option>
+              <option>Art</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="chkTerms" />
+              <label class="form-check-label" for="chkTerms">I agree to the Terms &amp; Conditions</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="chkNewsletter" />
+              <label class="form-check-label" for="chkNewsletter">Subscribe to newsletter</label>
+            </div>
+          </div>
+          <button class="btn btn-primary w-100">Create Account</button>
+        </div>
+      </div>
+    </div>
+    <!-- Login Form with form-floating -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-dark text-white fw-semibold">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Login Form (form-floating)
+        </div>
+        <div class="card-body d-flex flex-column justify-content-center">
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="floatEmail" placeholder="name@example.com" />
+            <label for="floatEmail"><i class="bi bi-envelope me-1"></i>Email address</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatPassword" placeholder="Password" />
+            <label for="floatPassword"><i class="bi bi-lock me-1"></i>Password</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select class="form-select" id="floatRole">
+              <option>Attendee</option>
+              <option>Organizer</option>
+              <option>Sponsor</option>
+            </select>
+            <label for="floatRole">Role</label>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="rememberMe" />
+              <label class="form-check-label small" for="rememberMe">Remember me</label>
+            </div>
+            <a href="#" class="text-primary small">Forgot password?</a>
+          </div>
+          <button class="btn btn-dark w-100 mb-2">Sign In</button>
+          <button class="btn btn-outline-primary w-100"><i class="bi bi-google me-2"></i>Continue with Google</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 9 – Buttons ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 9 – Buttons</span>
+  <h2 class="h4 fw-bold mb-3">Button Variants, Outlines, Groups &amp; Toggles</h2>
+  <div class="p-4 bg-light rounded-3 mb-3">
+    <p class="small fw-semibold text-muted text-uppercase mb-2">Solid Buttons</p>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-success">Success</button>
+      <button class="btn btn-danger">Danger</button>
+      <button class="btn btn-warning">Warning</button>
+      <button class="btn btn-info">Info</button>
+      <button class="btn btn-dark">Dark</button>
+      <button class="btn btn-light border">Light</button>
+    </div>
+    <p class="small fw-semibold text-muted text-uppercase mb-2">Outline Buttons</p>
+    <div class="d-flex flex-wrap gap-2 mb-3">
+      <button class="btn btn-outline-primary">Primary</button>
+      <button class="btn btn-outline-secondary">Secondary</button>
+      <button class="btn btn-outline-success">Success</button>
+      <button class="btn btn-outline-danger">Danger</button>
+      <button class="btn btn-outline-warning">Warning</button>
+      <button class="btn btn-outline-info">Info</button>
+      <button class="btn btn-outline-dark">Dark</button>
+    </div>
+    <p class="small fw-semibold text-muted text-uppercase mb-2">Button Group</p>
+    <div class="btn-group mb-3" role="group">
+      <button class="btn btn-primary"><i class="bi bi-grid me-1"></i>All</button>
+      <button class="btn btn-outline-primary">Tech</button>
+      <button class="btn btn-outline-primary">Music</button>
+      <button class="btn btn-outline-primary">Sports</button>
+    </div>
+    <p class="small fw-semibold text-muted text-uppercase mb-2">Toggle Buttons</p>
+    <div class="d-flex flex-wrap gap-2">
+      <input type="checkbox" class="btn-check" id="tbtn1" autocomplete="off" />
+      <label class="btn btn-outline-primary" for="tbtn1"><i class="bi bi-heart me-1"></i>Favourite</label>
+      <input type="checkbox" class="btn-check" id="tbtn2" autocomplete="off" />
+      <label class="btn btn-outline-success" for="tbtn2"><i class="bi bi-bookmark me-1"></i>Save</label>
+      <input type="checkbox" class="btn-check" id="tbtn3" autocomplete="off" />
+      <label class="btn btn-outline-danger" for="tbtn3"><i class="bi bi-bell me-1"></i>Notify</label>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 10 – Nav Tabs & Pills ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 10 – Nav Tabs &amp; Nav Pills</span>
+  <h2 class="h4 fw-bold mb-3">Tab &amp; Pill Navigation</h2>
+  <ul class="nav nav-tabs mb-3" id="eventTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-upcoming" type="button">Upcoming</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-past" type="button">Past Events</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-saved" type="button">Saved</button>
+    </li>
+  </ul>
+  <div class="tab-content border border-top-0 rounded-bottom p-3 mb-4">
+    <div class="tab-pane fade show active" id="tab-upcoming">
+      <p class="mb-0 text-muted"><i class="bi bi-calendar-check me-1 text-primary"></i>Upcoming Events — Bootstrap Summit, Music Fest, Art Expo…</p>
+    </div>
+    <div class="tab-pane fade" id="tab-past">
+      <p class="mb-0 text-muted"><i class="bi bi-clock-history me-1 text-secondary"></i>Past Events — previously attended and completed events.</p>
+    </div>
+    <div class="tab-pane fade" id="tab-saved">
+      <p class="mb-0 text-muted"><i class="bi bi-bookmark-fill me-1 text-warning"></i>Saved Events — events you bookmarked for later.</p>
+    </div>
+  </div>
+  <p class="small fw-semibold text-muted text-uppercase mb-2">Nav Pills</p>
+  <ul class="nav nav-pills">
+    <li class="nav-item"><a class="nav-link active" href="#">All</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Tech</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Music</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Sports</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Art</a></li>
+  </ul>
+
+  <!-- ===== Exercise 11 – Cards ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 11 – Cards</span>
+  <h2 class="h4 fw-bold mb-4">Profile Card, Event Cards &amp; Media Object</h2>
+  <div class="row g-4 mb-4">
+    <!-- Profile Card -->
+    <div class="col-md-4">
+      <div class="card shadow text-center h-100">
+        <div class="bg-primary" style="height:80px;border-radius:.375rem .375rem 0 0;"></div>
+        <img src="https://ui-avatars.com/api/?name=Arjun+Sharma&background=0d6efd&color=fff&size=80" class="rounded-circle border border-4 border-white mx-auto" style="width:80px;height:80px;margin-top:-40px;" alt="Profile" />
+        <div class="card-body pt-2">
+          <h5 class="card-title fw-bold mb-0">Arjun Sharma</h5>
+          <p class="text-muted small">Event Organizer</p>
+          <div class="d-flex justify-content-center gap-2 mb-3">
+            <span class="badge bg-primary">Tech</span>
+            <span class="badge bg-success">Music</span>
+          </div>
+          <button class="btn btn-primary btn-sm w-100">View Profile</button>
+        </div>
+      </div>
+    </div>
+    <!-- Event Card 1 -->
+    <div class="col-md-4">
+      <div class="card shadow h-100">
+        <div class="card-img-top bg-gradient bg-primary text-white d-flex align-items-center justify-content-center" style="height:140px;">
+          <i class="bi bi-cpu" style="font-size:3rem;opacity:.6;"></i>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <span class="badge bg-primary mb-2 align-self-start">Technology</span>
+          <h5 class="card-title fw-bold">Bootstrap Summit 2025</h5>
+          <p class="card-text text-muted small flex-fill">Join 500+ developers for two days of workshops, talks, and networking in Hyderabad.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <small class="text-muted"><i class="bi bi-calendar me-1"></i>Aug 12, 2025</small>
+            <button class="btn btn-sm btn-outline-primary">Register</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Event Card 2 -->
+    <div class="col-md-4">
+      <div class="card shadow h-100">
+        <div class="card-img-top bg-gradient bg-success text-white d-flex align-items-center justify-content-center" style="height:140px;">
+          <i class="bi bi-music-note-beamed" style="font-size:3rem;opacity:.6;"></i>
+        </div>
+        <div class="card-body d-flex flex-column">
+          <span class="badge bg-success mb-2 align-self-start">Music</span>
+          <h5 class="card-title fw-bold">Indie Music Festival</h5>
+          <p class="card-text text-muted small flex-fill">Three stages, 30 artists, and an unforgettable night under the stars in Hyderabad.</p>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <small class="text-muted"><i class="bi bi-calendar me-1"></i>Sep 5, 2025</small>
+            <button class="btn btn-sm btn-outline-success">Register</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Media Object -->
+  <p class="small fw-semibold text-muted text-uppercase mb-2">Media Object Layout</p>
+  <div class="card p-3 shadow-sm">
+    <div class="d-flex gap-3">
+      <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width:56px;height:56px;">
+        <i class="bi bi-person-fill fs-4"></i>
+      </div>
+      <div>
+        <h6 class="fw-bold mb-1">Priya Nair — <small class="text-muted fw-normal">Community Lead</small></h6>
+        <p class="text-muted small mb-0">Excited to see everyone at the Bootstrap Summit! The agenda is packed with workshops on responsive design, accessibility, and component architecture.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 12 – Spacing Utilities ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 12 – Spacing Utilities &amp; Pricing</span>
+  <h2 class="h4 fw-bold mb-3">Spacing: m-3, mt-4, p-2, py-5 + Pricing Section</h2>
+  <div class="bg-light rounded-3 p-3 mb-4">
+    <div class="d-flex flex-wrap gap-2">
+      <div class="border bg-white rounded p-2"><code>p-2</code> small padding</div>
+      <div class="border bg-white rounded m-3"><code>m-3</code> margin all sides</div>
+      <div class="border bg-white rounded mt-4 p-2"><code>mt-4</code> top margin</div>
+      <div class="border bg-white rounded py-5 px-3 text-center"><code>py-5</code> large vertical padding</div>
+    </div>
+  </div>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card shadow pricing-card text-center h-100 border-0">
+        <div class="card-header bg-light py-3 border-0">
+          <h5 class="fw-bold mb-0">Free</h5>
+        </div>
+        <div class="card-body py-4">
+          <div class="display-4 fw-bold mb-3">₹0<small class="fs-6 text-muted fw-normal">/mo</small></div>
+          <ul class="list-unstyled small text-muted mb-4">
+            <li class="py-1 border-bottom"><i class="bi bi-check text-success me-1"></i>Browse events</li>
+            <li class="py-1 border-bottom"><i class="bi bi-check text-success me-1"></i>3 registrations/mo</li>
+            <li class="py-1"><i class="bi bi-x text-danger me-1"></i>No priority access</li>
+          </ul>
+          <button class="btn btn-outline-primary w-100">Get Started</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-lg pricing-card text-center h-100 border-primary">
+        <div class="card-header bg-primary text-white py-3 border-0">
+          <h5 class="fw-bold mb-0">Pro <span class="badge bg-warning text-dark ms-1">Popular</span></h5>
+        </div>
+        <div class="card-body py-4">
+          <div class="display-4 fw-bold mb-3">₹499<small class="fs-6 text-muted fw-normal">/mo</small></div>
+          <ul class="list-unstyled small text-muted mb-4">
+            <li class="py-1 border-bottom"><i class="bi bi-check text-success me-1"></i>Unlimited registrations</li>
+            <li class="py-1 border-bottom"><i class="bi bi-check text-success me-1"></i>Priority access</li>
+            <li class="py-1"><i class="bi bi-check text-success me-1"></i>Event analytics</li>
+          </ul>
+          <button class="btn btn-primary w-100">Choose Pro</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow pricing-card text-center h-100 border-0">
+        <div class="card-header bg-dark text-white py-3 border-0">
+          <h5 class="fw-bold mb-0">Enterprise</h5>
+        </div>
+        <div class="card-body py-4">
+          <div class="display-4 fw-bold mb-3">₹1999<small class="fs-6 text-muted fw-normal">/mo</small></div>
+          <ul class="list-unstyled small text-muted mb-4">
+            <li class="py-1 border-bottom"><i class="bi bi-check text-success me-1"></i>Everything in Pro</li>
+            <li class="py-1 border-bottom"><i class="bi bi-check text-success me-1"></i>Dedicated support</li>
+            <li class="py-1"><i class="bi bi-check text-success me-1"></i>Custom branding</li>
+          </ul>
+          <button class="btn btn-dark w-100">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 13 – Colors & Backgrounds ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 13 – Colors &amp; Backgrounds</span>
+  <h2 class="h4 fw-bold mb-3">Background Color Utilities &amp; Gradients</h2>
+  <div class="row g-3 mb-3">
+    <div class="col">
+      <div class="bg-primary text-white rounded p-3 text-center fw-semibold">bg-primary</div>
+    </div>
+    <div class="col">
+      <div class="bg-success text-white rounded p-3 text-center fw-semibold">bg-success</div>
+    </div>
+    <div class="col">
+      <div class="bg-warning text-dark rounded p-3 text-center fw-semibold">bg-warning</div>
+    </div>
+    <div class="col">
+      <div class="bg-danger text-white rounded p-3 text-center fw-semibold">bg-danger</div>
+    </div>
+    <div class="col">
+      <div class="bg-dark text-white rounded p-3 text-center fw-semibold">bg-dark</div>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="bg-primary bg-gradient text-white rounded-3 p-4 text-center">
+        <i class="bi bi-stars fs-2"></i>
+        <p class="mb-0 mt-2 fw-semibold">bg-primary + bg-gradient</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="bg-dark bg-gradient text-white rounded-3 p-4 text-center">
+        <i class="bi bi-moon-stars fs-2"></i>
+        <p class="mb-0 mt-2 fw-semibold">bg-dark + bg-gradient</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 14 – Display & Visibility ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 14 – Display &amp; Visibility</span>
+  <h2 class="h4 fw-bold mb-3">d-none, d-md-block, d-lg-flex &amp; Responsive Sidebar</h2>
+  <div class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>
+    <strong>d-none:</strong> hidden always &nbsp;|&nbsp;
+    <strong>d-md-block:</strong> visible from md up &nbsp;|&nbsp;
+    <strong>d-lg-flex:</strong> flex from lg up
+  </div>
+  <div class="row g-3">
+    <div class="col-md-3 d-none d-md-block">
+      <div class="card bg-light p-3 h-100 border-0">
+        <h6 class="fw-bold text-primary mb-3"><i class="bi bi-layout-sidebar me-1"></i>Responsive Sidebar</h6>
+        <p class="small text-muted">Hidden on mobile (d-none), visible from md breakpoint (d-md-block).</p>
+        <ul class="list-unstyled small">
+          <li class="py-1 border-bottom"><a href="#" class="text-decoration-none text-dark">Filter: Tech</a></li>
+          <li class="py-1 border-bottom"><a href="#" class="text-decoration-none text-dark">Filter: Music</a></li>
+          <li class="py-1"><a href="#" class="text-decoration-none text-dark">Filter: Sports</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="card p-3 border-0 shadow-sm h-100">
+        <h6 class="fw-bold">Main Feed</h6>
+        <p class="text-muted small mb-1">Sidebar is hidden on small screens. Main content takes full width.</p>
+        <div class="d-lg-flex gap-2">
+          <span class="badge bg-primary">d-lg-flex active on large screens</span>
+          <span class="badge bg-secondary d-none d-lg-inline">Also visible lg+</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 15 – Borders, Shadows, Rounded ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 15 – Borders, Shadows &amp; Rounded Corners</span>
+  <h2 class="h4 fw-bold mb-3">border, rounded-circle, shadow-lg, rounded-pill</h2>
+  <div class="row g-4 align-items-center">
+    <div class="col-auto">
+      <img src="https://ui-avatars.com/api/?name=Bootstrap&background=0d6efd&color=fff&size=96" class="rounded-circle border border-primary border-3 shadow" alt="rounded-circle" style="width:96px;height:96px;" />
+      <p class="small text-center text-muted mt-2">rounded-circle<br/>border-primary border-3</p>
+    </div>
+    <div class="col-md-3">
+      <div class="card border border-primary border-3 p-3 rounded shadow">
+        <p class="mb-0 small"><code>border border-primary border-3</code> + shadow</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-lg rounded-4 p-3">
+        <p class="mb-0 small"><code>shadow-lg</code> + <code>rounded-4</code></p>
+      </div>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary rounded-pill px-4 shadow">rounded-pill button</button>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 16 – Positioning Utilities ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 16 – Positioning Utilities</span>
+  <h2 class="h4 fw-bold mb-3">position-relative / position-absolute + Fixed Footer Badge</h2>
+  <div class="row g-4 align-items-start">
+    <div class="col-md-4">
+      <div class="position-relative d-inline-block">
+        <img src="https://ui-avatars.com/api/?name=Event&background=198754&color=fff&size=120" class="rounded-3 shadow" alt="Event" style="width:120px;height:120px;" />
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          NEW <span class="visually-hidden">new event</span>
+        </span>
+      </div>
+      <p class="small text-muted mt-2">position-relative + position-absolute badge over image</p>
+    </div>
+    <div class="col-md-8">
+      <div class="alert alert-primary">
+        <i class="bi bi-info-circle me-2"></i>
+        A <strong>fixed footer</strong> uses <code>position-fixed bottom-0 start-0 w-100</code>. It is implemented at the bottom of this page and stays visible while scrolling.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 17 – Bootstrap Icons ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 17 – Bootstrap Icons</span>
+  <h2 class="h4 fw-bold mb-3">Social Icons &amp; Icon-only Buttons</h2>
+  <div class="d-flex flex-wrap gap-3 mb-4">
+    <a href="#" class="icon-btn-circle bg-danger text-white text-decoration-none fs-5" title="Instagram">
+      <i class="bi bi-instagram"></i>
+    </a>
+    <a href="#" class="icon-btn-circle bg-primary text-white text-decoration-none fs-5" title="Facebook">
+      <i class="bi bi-facebook"></i>
+    </a>
+    <a href="#" class="icon-btn-circle bg-info text-white text-decoration-none fs-5" title="Twitter / X">
+      <i class="bi bi-twitter-x"></i>
+    </a>
+    <a href="#" class="icon-btn-circle bg-primary text-white text-decoration-none fs-5" style="background:#0077b5!important;" title="LinkedIn">
+      <i class="bi bi-linkedin"></i>
+    </a>
+  </div>
+  <p class="small fw-semibold text-muted text-uppercase mb-2">Icon-only Buttons</p>
+  <div class="d-flex flex-wrap gap-2">
+    <button class="btn btn-primary icon-btn-circle" title="Home"><i class="bi bi-house-fill"></i></button>
+    <button class="btn btn-success icon-btn-circle" title="Add Event"><i class="bi bi-plus-lg"></i></button>
+    <button class="btn btn-warning icon-btn-circle" title="Notifications"><i class="bi bi-bell-fill"></i></button>
+    <button class="btn btn-info text-white icon-btn-circle" title="Search"><i class="bi bi-search"></i></button>
+    <button class="btn btn-danger icon-btn-circle" title="Delete"><i class="bi bi-trash-fill"></i></button>
+    <button class="btn btn-dark icon-btn-circle" title="Settings"><i class="bi bi-gear-fill"></i></button>
+    <button class="btn btn-outline-primary icon-btn-circle" title="Share"><i class="bi bi-share-fill"></i></button>
+  </div>
+
+  <!-- ===== Exercise 18 – Bootstrap JS Plugins ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 18 – Bootstrap JavaScript Plugins</span>
+  <h2 class="h4 fw-bold mb-4">Modal Popup &amp; Accordion</h2>
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100 p-4">
+        <h6 class="fw-bold mb-3"><i class="bi bi-window-stack me-2 text-primary"></i>Modal Popup</h6>
+        <p class="text-muted small">Click below to open a Bootstrap modal dialog with event registration form.</p>
+        <button class="btn btn-primary mt-auto" data-bs-toggle="modal" data-bs-target="#eventModal">
+          <i class="bi bi-calendar-plus me-2"></i>Open Event Modal
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100 p-4">
+        <h6 class="fw-bold mb-3"><i class="bi bi-layout-accordion me-2 text-success"></i>Accordion</h6>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                How do I register for an event?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body small text-muted">Click the Register button on any event card, fill out the form, and receive an email confirmation.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                Can I cancel my registration?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body small text-muted">Yes, cancellations are accepted up to 48 hours before the event. Visit your dashboard to cancel.</div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                Are events free to attend?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body small text-muted">Some events are free, others require ticket purchase. Pricing is shown on each event page.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Exercise 19 – Sass Customization ===== -->
+  <hr class="section-divider" />
+  <span class="exercise-label">Exercise 19 – Sass Customization</span>
+  <h2 class="h4 fw-bold mb-4">Customizing Bootstrap with Sass</h2>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 p-3">
+        <div class="text-warning fs-2 mb-2"><i class="bi bi-filetype-scss"></i></div>
+        <h6 class="fw-bold">What is Sass?</h6>
+        <p class="small text-muted mb-0">Sass (Syntactically Awesome Style Sheets) is a CSS preprocessor that extends CSS with variables, nesting, mixins, and functions. Bootstrap is written entirely in Sass, giving developers full customization control.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 p-3">
+        <div class="text-primary fs-2 mb-2"><i class="bi bi-sliders"></i></div>
+        <h6 class="fw-bold">Overriding Bootstrap Variables</h6>
+        <p class="small text-muted mb-0">Import your custom variables <em>before</em> Bootstrap's own variable file. This ensures your overrides take precedence throughout the entire framework via the cascade.</p>
+        <code class="d-block bg-light rounded p-2 mt-2 small">
+          // custom.scss<br/>
+          $primary: #e91e63;<br/>
+          $border-radius: 1rem;<br/>
+          @import "bootstrap";
+        </code>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100 p-3">
+        <div class="text-success fs-2 mb-2"><i class="bi bi-palette2"></i></div>
+        <h6 class="fw-bold">Color &amp; Border Customization</h6>
+        <p class="small text-muted mb-0">Change the primary brand color and global border radius in one place. Every component (buttons, cards, alerts, inputs) automatically inherits the new values — no individual overrides needed.</p>
+        <code class="d-block bg-light rounded p-2 mt-2 small">
+          $primary: #6200ea;<br/>
+          $border-radius: 0.5rem;<br/>
+          $font-size-base: 1rem;
+        </code>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===== Modals ===== -->
+
+<!-- Register Modal (Exercise 1 hero trigger) -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="registerModalLabel"><i class="bi bi-person-plus me-2"></i>Create Account</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <input type="text" class="form-control" placeholder="Your name" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input type="email" class="form-control" placeholder="you@example.com" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Password</label>
+          <input type="password" class="form-control" placeholder="Create password" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Register Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event Modal (Exercise 18 trigger) -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title" id="eventModalLabel"><i class="bi bi-calendar-event me-2"></i>Bootstrap Summit 2025 — Register</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="modalName" placeholder="Name" />
+              <label for="modalName">Full Name</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="email" class="form-control" id="modalEmail" placeholder="Email" />
+              <label for="modalEmail">Email</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-floating">
+              <select class="form-select" id="modalTicket">
+                <option>General Admission — ₹499</option>
+                <option>VIP Access — ₹1499</option>
+                <option>Workshop Bundle — ₹2499</option>
+              </select>
+              <label for="modalTicket">Ticket Type</label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="alert alert-info mb-0 small">
+              <i class="bi bi-info-circle me-2"></i>Event Date: <strong>Aug 12, 2025</strong> | Venue: <strong>Hyderabad Convention Centre</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary"><i class="bi bi-check2-circle me-2"></i>Confirm Registration</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Footer ===== -->
+<footer class="bg-dark text-white pt-5 pb-4 mt-5">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <h5 class="fw-bold mb-3"><i class="bi bi-calendar-event-fill text-primary me-2"></i>EventPortal</h5>
+        <p class="text-white-50 small">A comprehensive Bootstrap 5 learning project demonstrating all 19 core exercises in a single professional event management portal.</p>
+        <div class="d-flex gap-2 mt-3">
+          <a href="#" class="icon-btn-circle bg-danger text-white text-decoration-none"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="icon-btn-circle bg-primary text-white text-decoration-none"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="icon-btn-circle bg-info text-white text-decoration-none"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="icon-btn-circle text-white text-decoration-none" style="background:#0077b5;"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h6 class="fw-bold mb-3 text-uppercase text-white-50" style="font-size:.75rem;letter-spacing:.1em;">Events</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Browse All</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Technology</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Music</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Sports</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Art &amp; Culture</a></li>
+        </ul>
+      </div>
+      <div class="col-md-2">
+        <h6 class="fw-bold mb-3 text-uppercase text-white-50" style="font-size:.75rem;letter-spacing:.1em;">Community</h6>
+        <ul class="list-unstyled small">
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Forum</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Blog</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Newsletter</a></li>
+          <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Speakers</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6 class="fw-bold mb-3 text-uppercase text-white-50" style="font-size:.75rem;letter-spacing:.1em;">Stay Updated</h6>
+        <p class="small text-white-50">Subscribe to get updates on upcoming events.</p>
+        <div class="input-group">
+          <input type="email" class="form-control form-control-sm bg-white text-dark border-0" placeholder="Enter your email" />
+          <button class="btn btn-primary btn-sm">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <hr class="border-secondary mt-4 mb-3" />
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+      <p class="small text-white-50 mb-0">&copy; 2025 EventPortal. Built with Bootstrap 5. All 19 exercises implemented.</p>
+      <div class="d-flex gap-3">
+        <a href="#" class="text-white-50 small text-decoration-none">Privacy</a>
+        <a href="#" class="text-white-50 small text-decoration-none">Terms</a>
+        <a href="#" class="text-white-50 small text-decoration-none">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== Exercise 16 – Fixed Footer Bar ===== -->
+<div class="position-fixed bottom-0 start-0 w-100 bg-primary text-white py-2 px-3 d-flex justify-content-between align-items-center shadow" style="z-index:1030;">
+  <span class="small"><i class="bi bi-info-circle me-2"></i><strong>Exercise 16:</strong> position-fixed bottom-0 — This bar is always visible while scrolling.</span>
+  <button type="button" class="btn-close btn-close-white btn-sm" onclick="this.parentElement.style.display='none'" title="Close"></button>
+</div>
+
+<!-- Bootstrap 2 – bootstrap.bundle.min.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

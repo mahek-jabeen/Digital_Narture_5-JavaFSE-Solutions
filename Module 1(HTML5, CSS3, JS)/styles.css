@@ -1,0 +1,1430 @@
+/*
+ * ============================================================
+ * CommunityHub — Local Community Event Portal
+ * Phase 2: CSS3 Stylesheet
+ * Cognizant Digital Nurture 5.0 | Module 1
+ * ============================================================
+ * HOW TO VERIFY THIS FILE LOADS:
+ *   Open DevTools (F12) → Network tab → Reload page → look for styles.css returning 200 OK.
+ *   Or: Elements tab → select <link> tag → confirm href="styles.css".
+ * HOW TO TEST RESPONSIVENESS:
+ *   DevTools (F12) → Toggle Device Toolbar (Ctrl+Shift+M) → choose a mobile preset.
+ *   Or resize the browser window below 768px.
+ * HOW TO INSPECT STYLES:
+ *   Right-click any element → Inspect → Styles panel shows applied CSS rules & the file:line origin.
+ * ============================================================
+ */
+
+/* ============================================================
+   CSS EXERCISE 1 — WHY CSS? INLINE VS INTERNAL VS EXTERNAL
+   • This external stylesheet is the primary style source.
+   • An internal <style> block in <head> holds CSS variables & reset (demo only).
+   • One heading uses inline red color (see index.html: #mainHeader).
+   • Demonstrates: external > internal > inline specificity.
+   ============================================================ */
+
+/* ============================================================
+   CSS EXERCISE 2 — CSS SYNTAX AND COMMENTS
+   • Clean, consistent 2-space indentation throughout.
+   • Every major section marked with a comment block.
+   • Properties grouped logically (position → box → typography → visual).
+   ============================================================ */
+
+/* ============================================================
+   SECTION: CSS CUSTOM PROPERTIES (Design System)
+   ============================================================ */
+:root {
+  /* Blue palette */
+  --blue-900: #0a1628;
+  --blue-800: #0d2045;
+  --blue-700: #1a3a6b;
+  --blue-600: #1e4d8c;
+  --blue-500: #2563eb;
+  --blue-400: #3b82f6;
+  --blue-300: #93c5fd;
+  --blue-100: #dbeafe;
+  --blue-50:  #eff6ff;
+
+  /* Neutrals */
+  --white:    #ffffff;
+  --gray-50:  #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-400: #94a3b8;
+  --gray-600: #475569;
+  --gray-800: #1e293b;
+
+  /* Semantic */
+  --accent:  #f59e0b;
+  --danger:  #ef4444;
+  --success: #22c55e;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius:    12px;
+  --radius-lg: 20px;
+
+  /* Shadows — CSS Exercise 8 box-model */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow:    0 4px 16px rgba(10,22,40,.12), 0 1px 4px rgba(10,22,40,.08);
+  --shadow-lg: 0 16px 48px rgba(10,22,40,.18), 0 4px 12px rgba(10,22,40,.1);
+
+  /* Transitions */
+  --transition: .25s cubic-bezier(.4,0,.2,1);
+
+  /* Typography — CSS Exercise 5 */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+}
+
+/* ============================================================
+   CSS EXERCISE 3 — SELECTORS PLAYGROUND
+   ============================================================ */
+
+/* Universal selector * — box-sizing reset for all elements */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Element selector — html base */
+html {
+  scroll-behavior: smooth;
+  font-size: 16px; /* 1rem base for relative units */
+}
+
+/* Element selector — body */
+body {
+  font-family: var(--font-body);        /* CSS Exercise 5: font-family */
+  font-size: 1rem;                       /* CSS Exercise 5: font-size */
+  line-height: 1.6;                      /* CSS Exercise 5: line-height */
+  background: var(--gray-50);
+  color: var(--gray-800);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Element selectors */
+img { max-width: 100%; display: block; }
+a   { color: inherit; text-decoration: none; }
+
+/* Element selector — grouping selector h2, h3, h4 (CSS Exercise 3) */
+h2, h3, h4 {
+  line-height: 1.2;
+  color: var(--blue-900);
+}
+
+/* Element selector — p */
+p { margin-bottom: 0; }
+
+/* ID selector — #mainHeader (CSS Exercise 3) */
+#mainHeader {
+  /* inline red color applied directly in HTML for Exercise 1 demo */
+  font-family: var(--font-display);
+}
+
+/* Class selector — .container (CSS Exercise 3) */
+.container {
+  width: min(1200px, 92%);
+  margin-inline: auto;
+}
+
+/* ============================================================
+   CSS EXERCISE 4 — COLOR & BACKGROUND STYLING
+   • HEX colors:      #0a1628, #2563eb, #ffffff, etc.
+   • RGBA colors:     rgba(37,99,235,.35), rgba(255,255,255,.12), etc.
+   • Background image with fallback color (hero section below).
+   • Linear gradients on section headers.
+   • Professional blue-white palette throughout.
+   ============================================================ */
+
+/* ============================================================
+   CSS EXERCISE 5 — TYPOGRAPHY
+   • Google Fonts: Playfair Display (display) + DM Sans (body)
+   • font-family, font-size, font-style, font-weight,
+     text-transform, letter-spacing, line-height, text-align
+   ============================================================ */
+
+/* Utility typography classes */
+.section-label {
+  display: inline-block;
+  font-size: .72rem;                     /* font-size */
+  font-weight: 600;                      /* font-weight */
+  letter-spacing: .12em;                 /* letter-spacing */
+  text-transform: uppercase;             /* text-transform */
+  color: var(--blue-500);
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  padding: .3em .85em;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: var(--font-display);      /* font-family — display font */
+  font-size: clamp(1.6rem, 3vw, 2.4rem);/* font-size with clamp (responsive) */
+  font-weight: 700;                      /* font-weight */
+  color: var(--blue-900);
+  line-height: 1.2;                      /* line-height */
+  margin-bottom: .6rem;
+}
+
+.section-sub {
+  color: var(--gray-600);
+  font-size: 1rem;                       /* font-size */
+  line-height: 1.7;                      /* line-height */
+  max-width: 560px;
+}
+
+/* ============================================================
+   BUTTON COMPONENT
+   (uses box-model — CSS Exercise 8)
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  padding: .7em 1.6em;                   /* padding — CSS Exercise 8 */
+  border-radius: var(--radius-sm);       /* border-radius — CSS Exercise 8 */
+  font-family: var(--font-body);
+  font-size: .95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+/* Class selector — .btn-primary */
+.btn-primary {
+  background: var(--blue-500);           /* HEX color — CSS Exercise 4 */
+  color: var(--white);
+  box-shadow: 0 2px 8px rgba(37,99,235,.35); /* RGBA — CSS Exercise 4, box-shadow — CSS Exercise 8 */
+}
+
+/* CSS Exercise 6 — Link pseudo-class :hover */
+.btn-primary:hover {
+  background: var(--blue-600);
+  box-shadow: 0 4px 16px rgba(37,99,235,.45);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--blue-500);
+  border: 1.5px solid var(--blue-400);   /* border — CSS Exercise 8 */
+}
+
+.btn-outline:hover { background: var(--blue-50); }
+
+.btn-ghost {
+  background: rgba(255,255,255,.12);     /* RGBA — CSS Exercise 4 */
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,.25);
+}
+
+.btn-ghost:hover { background: rgba(255,255,255,.22); }
+
+/* ============================================================
+   CARD COMPONENT
+   (CSS Exercise 8 — box model)
+   ============================================================ */
+/* Class selector — .card */
+.card {
+  background: var(--white);
+  border-radius: var(--radius);          /* border-radius — CSS Exercise 8 */
+  box-shadow: var(--shadow);             /* box-shadow — CSS Exercise 8 */
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+/* ============================================================
+   EXERCISE HEADING LABELS
+   (linear gradient background — CSS Exercise 4)
+   ============================================================ */
+.ex-heading {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--white);
+  /* Linear gradient — CSS Exercise 4 */
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+  padding: .55em 1.2em;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(37,99,235,.3);
+}
+
+.ex-heading::before {
+  content: attr(data-num);
+  background: rgba(255,255,255,.2);
+  border-radius: 4px;
+  padding: .1em .5em;
+  font-size: .85em;
+}
+
+/* ============================================================
+   HEADER STYLES
+   ============================================================ */
+
+/* ID selector — #navbar */
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--blue-900);            /* HEX — CSS Exercise 4 */
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+
+.nav-inner {
+  display: flex;                          /* Flexbox — CSS Exercise 10 */
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 2rem;
+}
+
+/* Class selector — .nav-logo */
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.nav-logo span { color: var(--blue-300); }
+
+/* ============================================================
+   NAVIGATION STYLES
+   CSS Exercise 6 — Link & List Styling
+   ============================================================ */
+
+/* Class selector — .nav-links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  list-style: none;                       /* Remove bullets — CSS Exercise 6 */
+  padding: 0;                             /* Remove default list padding */
+  margin: 0;
+}
+
+/* CSS Exercise 6 — :link pseudo-class */
+.nav-links a:link {
+  color: rgba(255,255,255,.72);
+}
+
+/* CSS Exercise 6 — :visited pseudo-class */
+.nav-links a:visited {
+  color: rgba(255,255,255,.55);
+}
+
+/* CSS Exercise 6 — :hover pseudo-class with animation */
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--white);
+  background: rgba(255,255,255,.1);
+}
+
+/* CSS Exercise 6 — :active pseudo-class */
+.nav-links a:active {
+  background: rgba(255,255,255,.18);
+  color: var(--blue-300);
+}
+
+/* Element selector — nav links base */
+.nav-links a {
+  color: rgba(255,255,255,.72);
+  font-size: .9rem;
+  font-weight: 500;
+  padding: .45em .9em;                   /* padding — proper spacing CSS Exercise 6 */
+  border-radius: var(--radius-sm);
+  transition: var(--transition);         /* hover animation — CSS Exercise 6 */
+  display: block;
+}
+
+.nav-cta { margin-left: .5rem; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: .5rem;
+  background: transparent;
+  border: none;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+/* ============================================================
+   HERO SECTION
+   CSS Exercise 4 — Background image with fallback + linear gradient
+   ============================================================ */
+
+/* ID selector — #home */
+#home {
+  /* Fallback color (HEX) + background image + linear gradient overlay — CSS Exercise 4 */
+  background-color: var(--blue-900);
+  background-image:
+    linear-gradient(135deg, var(--blue-900) 0%, var(--blue-700) 60%, var(--blue-500) 100%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  position: relative;
+  overflow: hidden;
+  padding: 110px 0 90px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(255,255,255,.12);     /* RGBA — CSS Exercise 4 */
+  border: 1px solid rgba(255,255,255,.2);
+  color: var(--blue-100);
+  font-size: .82rem;
+  font-weight: 600;
+  padding: .4em 1em;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+  letter-spacing: .06em;
+}
+
+.hero-title {
+  font-family: var(--font-display);      /* font-family — CSS Exercise 5 */
+  font-size: clamp(2.4rem, 6vw, 4rem);  /* vw unit — CSS Exercise 10 */
+  font-weight: 900;                      /* font-weight — CSS Exercise 5 */
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+.hero-title em {
+  color: var(--blue-300);
+  font-style: italic;                    /* font-style — CSS Exercise 5 */
+}
+
+.hero-sub {
+  color: rgba(255,255,255,.75);
+  font-size: 1.1rem;
+  margin-bottom: 2.25rem;
+  max-width: 520px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;                          /* Flexbox — CSS Exercise 10 */
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.stat-val {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.stat-lbl {
+  font-size: .82rem;
+  color: rgba(255,255,255,.55);
+  margin-top: .1rem;
+}
+
+/* ============================================================
+   WELCOME BANNER — Exercise 3
+   ============================================================ */
+#section-ex3 {
+  padding: 56px 0;
+}
+
+/* ID selector — #welcomeBanner */
+#welcomeBanner {
+  /* Linear gradient — CSS Exercise 4 */
+  background: linear-gradient(120deg, var(--blue-800) 0%, var(--blue-600) 100%);
+  border-radius: var(--radius-lg);       /* border-radius — CSS Exercise 8 */
+  padding: 3rem 3.5rem;                  /* padding — CSS Exercise 8 */
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);          /* box-shadow — CSS Exercise 8 */
+}
+
+#welcomeBanner::after {
+  content: '🎉';
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 5rem;
+  opacity: .15;
+}
+
+/* Class selector — .highlight */
+.highlight {
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: var(--radius-sm);
+  padding: .2em .6em;
+  font-weight: 600;
+}
+
+.welcome-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  margin-bottom: .75rem;
+}
+
+.welcome-sub {
+  opacity: .85;
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   GALLERY STYLES
+   CSS Exercise 7 — Table Styling
+   ============================================================ */
+#section-ex4 {
+  padding: 64px 0;
+  background: var(--white);
+}
+
+/* CSS Exercise 7 — table styling */
+.gallery-table {
+  width: 100%;
+  border-collapse: separate;             /* border-collapse — CSS Exercise 7 */
+  border-spacing: 16px;
+  margin-top: 2rem;
+}
+
+.gallery-table td {
+  vertical-align: top;
+  width: 33.33%;
+  padding: 0;                            /* padding — CSS Exercise 7 */
+  border: none;
+}
+
+/* CSS Exercise 7 — zebra striping via pseudo-class (applied to caption rows) */
+.gallery-table tr:nth-child(even) .gallery-caption {
+  background: var(--gray-50);
+}
+
+.gallery-table tr:nth-child(odd) .gallery-caption {
+  background: var(--white);
+}
+
+/* CSS Exercise 7 — centered text in table */
+.gallery-table td {
+  text-align: center;                    /* text-align — CSS Exercise 5 + 7 */
+}
+
+.gallery-cell {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--gray-50);
+  transition: var(--transition);
+  cursor: pointer;
+  /* border — CSS Exercise 7 & 8 */
+  border: 1px solid var(--gray-200);
+}
+
+.gallery-cell:hover {
+  transform: scale(1.03);
+  box-shadow: var(--shadow-lg);
+  /* outline — CSS Exercise 8 */
+  outline: 2px solid var(--blue-400);
+  outline-offset: 2px;
+}
+
+/* Class selector — .img-border */
+.img-border {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 3px solid var(--blue-500); /* border — CSS Exercise 8 */
+}
+
+.gallery-caption {
+  padding: .75rem 1rem;                  /* padding — CSS Exercise 8 */
+  font-size: .87rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  text-align: center;
+}
+
+.gallery-caption small {
+  display: block;
+  color: var(--gray-400);
+  font-weight: 400;
+  margin-top: .15rem;
+}
+
+/* ============================================================
+   EVENTS SECTION
+   ============================================================ */
+#events {
+  padding: 80px 0;
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* CSS Grid — Exercise 10 */
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.event-card { position: relative; }
+
+.event-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.event-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--accent);             /* HEX — CSS Exercise 4 */
+  color: var(--blue-900);
+  font-size: .73rem;
+  font-weight: 700;
+  padding: .3em .8em;
+  border-radius: 999px;
+  letter-spacing: .05em;
+  text-transform: uppercase;             /* text-transform — CSS Exercise 5 */
+}
+
+.event-body {
+  padding: 1.25rem 1.5rem 1.5rem;       /* padding — CSS Exercise 8 */
+}
+
+.event-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: .75rem;
+  color: var(--gray-400);
+  font-size: .82rem;
+}
+
+.event-meta span {
+  display: flex;
+  align-items: center;
+  gap: .3em;
+}
+
+/* Class selector — .event-title */
+.event-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--blue-900);
+  margin-bottom: .5rem;
+  line-height: 1.3;
+}
+
+.event-desc {
+  font-size: .9rem;
+  color: var(--gray-600);
+  margin-bottom: 1.25rem;
+}
+
+.event-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--blue-600);
+}
+
+/* ============================================================
+   FORM STYLES
+   CSS Exercise 8 — Box Model: margin, padding, border, border-radius, box-shadow
+   ============================================================ */
+#section-ex5 {
+  padding: 80px 0;
+  background: var(--gray-50);
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.form-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* CSS Grid — Exercise 10 */
+  gap: 3rem;
+  align-items: start;
+}
+
+.form-info h3 {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--blue-900);
+  margin-bottom: .75rem;
+}
+
+.form-info p {
+  color: var(--gray-600);
+  margin-bottom: 1.5rem;
+}
+
+.form-feature {
+  display: flex;
+  gap: .75rem;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.form-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;                    /* border-radius — CSS Exercise 8 */
+  background: var(--blue-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.form-feature-text strong {
+  display: block;
+  font-size: .9rem;
+  color: var(--blue-900);
+}
+
+.form-feature-text span {
+  font-size: .83rem;
+  color: var(--gray-400);
+}
+
+/* Class selector — .reg-form */
+.reg-form {
+  background: var(--white);
+  border-radius: var(--radius-lg);       /* border-radius — CSS Exercise 8 */
+  padding: 2.5rem;                       /* padding — CSS Exercise 8 */
+  box-shadow: var(--shadow-lg);          /* box-shadow — CSS Exercise 8 */
+  /* Glassmorphism effect */
+  border: 1px solid rgba(255,255,255,.6);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;               /* margin — CSS Exercise 8 */
+}
+
+.form-group label {
+  display: block;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin-bottom: .45rem;
+}
+
+.form-group label .req {
+  color: var(--danger);
+  margin-left: .2em;
+}
+
+/* Class selector — .form-control */
+.form-control {
+  width: 100%;
+  padding: .72em 1em;                    /* padding — CSS Exercise 8 */
+  border: 1.5px solid var(--gray-200);  /* border — CSS Exercise 8 */
+  border-radius: var(--radius-sm);       /* border-radius — CSS Exercise 8 */
+  font-family: var(--font-body);
+  font-size: .95rem;
+  color: var(--gray-800);
+  background: var(--white);
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--blue-500);
+  /* box-shadow as focus ring — CSS Exercise 8 */
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+.form-control::placeholder {
+  color: var(--gray-400);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* CSS Grid — Exercise 10 */
+  gap: 1rem;
+}
+
+.form-output {
+  font-size: .88rem;
+  color: var(--blue-600);
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  border-radius: var(--radius-sm);
+  padding: .6em 1em;
+  margin-top: -.5rem;
+  margin-bottom: .5rem;
+  min-height: 2.2em;
+}
+
+/* ============================================================
+   FEEDBACK SECTION — Exercise 6
+   ============================================================ */
+#section-ex6 {
+  padding: 80px 0;
+  background: var(--white);
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.feedback-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* CSS Grid — Exercise 10 */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feedback-card {
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);  /* border — CSS Exercise 8 */
+  border-radius: var(--radius);          /* border-radius — CSS Exercise 8 */
+  padding: 1.5rem;                       /* padding — CSS Exercise 8 */
+  /* Glassmorphism card — professional design */
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.feedback-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--blue-200);
+}
+
+.feedback-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue-800);
+  margin-bottom: .5rem;
+}
+
+.feedback-card p {
+  font-size: .85rem;
+  color: var(--gray-600);
+  margin-bottom: 1rem;
+}
+
+.char-counter {
+  font-size: .78rem;
+  color: var(--gray-400);
+  text-align: right;
+  margin-top: .25rem;
+}
+
+/* Status badge classes */
+.status-badge {
+  display: inline-block;
+  font-size: .8rem;
+  font-weight: 600;
+  padding: .25em .8em;
+  border-radius: 999px;
+  margin-top: .75rem;
+}
+
+.status-ok  { background: #dcfce7; color: #15803d; }
+.status-err { background: #fee2e2; color: #b91c1c; }
+.status-info{ background: var(--blue-50); color: var(--blue-700); }
+
+.enlarge-img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.enlarge-img.big { height: 260px; }
+
+/* ============================================================
+   VIDEO SECTION STYLES — Exercise 7
+   ============================================================ */
+#section-ex7 {
+  padding: 80px 0;
+  background: var(--blue-900);           /* HEX — CSS Exercise 4 */
+}
+
+/* Grouping selector — h2, p inside video section */
+#section-ex7 .section-title { color: var(--white); }
+#section-ex7 .section-sub   { color: rgba(255,255,255,.6); }
+#section-ex7 .ex-heading     {
+  background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+.video-wrap {
+  background: rgba(255,255,255,.05);     /* RGBA — CSS Exercise 4 */
+  border: 1px solid rgba(255,255,255,.1);/* border — CSS Exercise 8 */
+  border-radius: var(--radius-lg);       /* border-radius — CSS Exercise 8 */
+  overflow: hidden;
+  max-width: 760px;
+  margin: 2rem auto 0;
+  box-shadow: var(--shadow-lg);          /* box-shadow — CSS Exercise 8 */
+}
+
+.video-wrap video {
+  width: 100%;
+  display: block;
+}
+
+.video-status {
+  text-align: center;
+  padding: 1.25rem;
+  color: rgba(255,255,255,.7);
+  font-size: .9rem;
+  min-height: 3.5rem;
+}
+
+.video-status.ready {
+  color: #86efac;
+  font-weight: 600;
+}
+
+/* ============================================================
+   USER PREFERENCES / STORAGE — Exercise 8 (section)
+   ============================================================ */
+#section-ex8 {
+  padding: 80px 0;
+  background: var(--gray-50);
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.pref-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* CSS Grid — Exercise 10 */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.pref-box {
+  background: var(--white);
+  border-radius: var(--radius);          /* border-radius — CSS Exercise 8 */
+  padding: 2rem;                         /* padding — CSS Exercise 8 */
+  box-shadow: var(--shadow);             /* box-shadow — CSS Exercise 8 */
+  border-top: 4px solid var(--blue-500); /* border — CSS Exercise 8 */
+}
+
+.pref-box h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue-800);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pref-display {
+  font-size: .85rem;
+  color: var(--blue-700);
+  background: var(--blue-50);
+  border-radius: var(--radius-sm);
+  padding: .6em 1em;
+  min-height: 2.2em;
+  margin-top: .5rem;
+}
+
+/* ============================================================
+   GEOLOCATION SECTION — Exercise 9 (section)
+   ============================================================ */
+#section-ex9 {
+  padding: 80px 0;
+  background: var(--white);
+}
+
+.geo-box {
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-200);  /* border — CSS Exercise 8 */
+  border-radius: var(--radius-lg);       /* border-radius — CSS Exercise 8 */
+  padding: 3rem;                         /* padding — CSS Exercise 8 */
+  text-align: center;
+  max-width: 600px;
+  margin: 2rem auto 0;
+  box-shadow: var(--shadow);
+}
+
+.geo-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.geo-result {
+  margin-top: 1.5rem;
+  font-size: .95rem;
+  color: var(--gray-600);
+  min-height: 3rem;
+}
+
+.geo-result strong { color: var(--blue-700); }
+.geo-result.err    { color: var(--danger); }
+
+.geo-loader {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid var(--blue-200);
+  border-top-color: var(--blue-500);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  vertical-align: middle;
+  margin-right: .5rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   DEBUGGING SECTION — Exercise 10 (section)
+   ============================================================ */
+#section-ex10 {
+  padding: 80px 0;
+  background: var(--gray-50);
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.debug-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* CSS Grid — Exercise 10 */
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.debug-card {
+  background: var(--blue-900);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.debug-card h4 {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--blue-300);
+  margin-bottom: .85rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.code-block {
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: .82rem;
+  color: #93c5fd;
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.7;
+}
+
+.code-comment { color: #64748b; }
+.code-string  { color: #86efac; }
+.code-keyword { color: #f9a8d4; }
+
+.debug-tip {
+  font-size: .83rem;
+  color: rgba(255,255,255,.6);
+  margin-top: .75rem;
+  /* border as left accent — CSS Exercise 8 */
+  border-left: 3px solid var(--blue-500);
+  padding-left: .75rem;
+}
+
+.debug-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.25rem;
+}
+
+/* ============================================================
+   CSS EXERCISE 9 — MULTIPLE COLUMNS
+   Community News Bulletin section
+   ============================================================ */
+#news-bulletin {
+  padding: 80px 0;
+  background: var(--blue-50);
+}
+
+/* ID selector — #news-bulletin */
+#news-bulletin .section-title {
+  text-align: center;                    /* text-align — CSS Exercise 5 */
+  margin-bottom: .5rem;
+}
+
+#news-bulletin .section-sub {
+  text-align: center;
+  margin: 0 auto 2.5rem;
+}
+
+/* Class selector — .news-columns */
+.news-columns {
+  column-count: 2;                       /* Multiple columns — CSS Exercise 9 */
+  column-gap: 30px;                      /* CSS Exercise 9 */
+  column-rule: 1px solid var(--gray-400); /* CSS Exercise 9 */
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+}
+
+.news-columns h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--blue-800);
+  margin-bottom: .4rem;
+  break-inside: avoid;
+}
+
+.news-item {
+  margin-bottom: 1.75rem;
+  break-inside: avoid;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.news-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.news-item p {
+  font-size: .9rem;
+  color: var(--gray-600);
+  line-height: 1.65;
+}
+
+.news-date {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;             /* text-transform — CSS Exercise 5 */
+  color: var(--blue-500);
+  margin-bottom: .4rem;
+}
+
+/* ============================================================
+   CONTACT SECTION STYLES
+   ============================================================ */
+#contact {
+  padding: 80px 0;
+  background: var(--blue-50);
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;        /* CSS Grid — Exercise 10 */
+  gap: 3rem;
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+.contact-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--blue-500);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.contact-detail h5 {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--blue-900);
+}
+
+.contact-detail p {
+  font-size: .88rem;
+  color: var(--gray-600);
+}
+
+.contact-form-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+}
+
+.contact-form-box h4 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--blue-900);
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================================
+   FOOTER STYLES
+   ============================================================ */
+footer {
+  background: var(--blue-900);           /* HEX — CSS Exercise 4 */
+  color: rgba(255,255,255,.65);
+  padding: 60px 0 30px;
+}
+
+/* CSS Exercise 10 — CSS Grid */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr; /* CSS Grid — Exercise 10 */
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: .75rem;
+}
+
+.footer-logo span { color: var(--blue-300); }
+
+.footer-desc {
+  font-size: .88rem;
+  line-height: 1.7;
+  max-width: 260px;
+}
+
+.footer-col h5 {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: .06em;
+  text-transform: uppercase;             /* text-transform — CSS Exercise 5 */
+  margin-bottom: 1rem;
+}
+
+/* CSS Exercise 6 — Remove bullets from footer lists */
+.footer-col ul {
+  list-style: none;                      /* Remove bullets — CSS Exercise 6 */
+  padding: 0;
+}
+
+.footer-col li { margin-bottom: .6rem; }
+
+/* CSS Exercise 6 — Link pseudo-classes :link :visited :hover :active */
+.footer-col a:link    { color: rgba(255,255,255,.55); font-size: .88rem; transition: var(--transition); }
+.footer-col a:visited { color: rgba(255,255,255,.45); }
+.footer-col a:hover   { color: var(--white); }
+.footer-col a:active  { color: var(--blue-300); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .82rem;
+}
+
+/* CSS Exercise 10 — Flexbox */
+.footer-socials {
+  display: flex;                          /* Flexbox — CSS Exercise 10 */
+  gap: .75rem;
+}
+
+.footer-socials a {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .95rem;
+  transition: var(--transition);
+  color: rgba(255,255,255,.7);
+}
+
+.footer-socials a:hover { background: var(--blue-500); color: var(--white); }
+
+/* ============================================================
+   CSS EXERCISE 8 — BOX MODEL DEMO
+   visibility: hidden and display: none demonstrations
+   (these classes can be toggled in DevTools to test)
+   ============================================================ */
+
+/* visibility: hidden — hides element but preserves its space in layout */
+.demo-visibility-hidden {
+  visibility: hidden; /* element is invisible but still occupies space */
+}
+
+/* display: none — removes element completely from layout flow */
+.demo-display-none {
+  display: none; /* element is removed from layout, no space reserved */
+}
+
+/* ============================================================
+   SCROLL REVEAL ANIMATION
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   CSS EXERCISE 10 — RESPONSIVE WEB DESIGN
+   Media Queries for screens below 768px
+   Uses: %, vw, vh, rem, Flexbox, CSS Grid
+   ============================================================ */
+
+/* Tablet breakpoint */
+@media (max-width: 900px) {
+  /* Stack 2-col grids to single column */
+  .form-wrap,
+  .feedback-grid,
+  .pref-grid,
+  .debug-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .news-columns {
+    column-count: 1;                     /* Reduce columns on tablet */
+  }
+}
+
+/* Mobile breakpoint — screens below 768px */
+@media (max-width: 768px) {
+  /* Typography — reduce font sizes */
+  html { font-size: 15px; }              /* rem-based scaling */
+
+  .hero-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem); /* vw — CSS Exercise 10 */
+  }
+
+  .section-title {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  /* Stack navbar vertically — CSS Exercise 10 */
+  .nav-links,
+  .nav-cta {
+    display: none;
+  }
+
+  .hamburger { display: flex; }
+
+  /* Resize images — CSS Exercise 10 */
+  .img-border { height: 120px; }         /* % reduction */
+  .event-img  { height: 160px; }
+
+  /* Improve mobile layout */
+  .hero-stats {
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .gallery-table { border-spacing: 8px; }
+
+  .form-row { grid-template-columns: 1fr; }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  #welcomeBanner {
+    padding: 2rem 1.5rem;
+  }
+
+  .geo-box { padding: 2rem 1.25rem; }
+
+  .news-columns { padding: 1.5rem; }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .container { width: 95%; }
+
+  .hero-actions { flex-direction: column; }
+
+  .hero-actions .btn { width: 100%; justify-content: center; }
+
+  #welcomeBanner::after { display: none; }
+}
+
+/* ============================================================
+   CSS EXERCISE 11 — DEBUG & TEST COMMENTS
+   • To inspect styles:      F12 → Elements → Styles panel
+   • To test responsiveness: F12 → Ctrl+Shift+M (Device Toolbar) → choose preset or resize
+   • To verify styles.css loads: F12 → Network → filter by "styles.css" → check Status 200
+   • To check media queries:  F12 → Elements → Responsive → drag viewport width below 768px
+   ============================================================ */
