@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+h2 {
+  color: #333;
+}
+
+h3 {
+  color: #222;
+}
+
+p {
+  color: #555;
+  line-height: 1.5;
+}

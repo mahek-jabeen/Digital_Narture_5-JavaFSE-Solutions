@@ -1,0 +1,48 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+.score-card {
+  width: 420px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 2px solid #cccccc;
+  border-radius: 10px;
+  background-color: #ffffff;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.heading {
+  color: brown;
+  font-size: 28px;
+  margin-bottom: 18px;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 20px;
+  color: #222222;
+}
+
+.value {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.name {
+  color: blue;
+}
+
+.school {
+  color: crimson;
+}
+
+.total {
+  color: darkmagenta;
+}
+
+.score {
+  color: forestgreen;
+}
