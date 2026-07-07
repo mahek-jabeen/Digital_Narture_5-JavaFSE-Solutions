@@ -15,3 +15,31 @@ yarn-error.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Maven
+**/target/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+**/node_modules/
+**/build/
+
+# Environment
+.env
