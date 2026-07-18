@@ -43,3 +43,7 @@ Thumbs.db
 
 # Environment
 .env
+
+# Windows
+desktop.ini
+Thumbs.db
